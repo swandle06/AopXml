@@ -7,97 +7,38 @@
     <xs:import namespace="http://www.w3.org/1999/xhtml"
         schemaLocation="http://www.w3.org/2002/08/xhtml/xhtml1-strict.xsd"/>
     <!--Define the complex types for key events (KE), molecular initiating events (MIE), adverse outcome (AO) and applicability -->
-
-    <xs:simpleType name="guid">
-        <xs:annotation>
-            <xs:documentation xml:lang="en">
-                The representation of a GUID, generally the id of an element.
-            </xs:documentation>
-        </xs:annotation>
-        <xs:restriction base="xs:string">
-            <xs:pattern
-                value="\{[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}\}"
-            />
-        </xs:restriction>
-    </xs:simpleType>
-    <xs:complexType name="Html">
-        <xs:complexContent>
-            <xs:extension base="xhtml:Block">
-                <xs:attributeGroup ref="xhtml:attrs"/>
-                <xs:attribute name="onload" type="xhtml:Script"/>
-                <xs:attribute name="onunload" type="xhtml:Script"/>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-    <xs:complexType name="chemical_info_type">
-        <xs:sequence>
-            <xs:element name="casrn" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="iupac_name" type="xs:string" maxOccurs="unbounded" minOccurs="0"/>
-            <xs:element name="smiles" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="inchi" type="xs:string" maxOccurs="unbounded" minOccurs="0"/>
-            <xs:element name="inchi_key" type="xs:string" minOccurs="0"/>
-            <xs:element name="uuid" type="xs:string" maxOccurs="unbounded" minOccurs="0"/>
-            <xs:element name="formula" type="xs:string" maxOccurs="unbounded" minOccurs="0"/>
-            <xs:element name="structural_diagram_2d" type="xs:hexBinary" maxOccurs="unbounded"
-                minOccurs="0"/>
-            <xs:any namespace="##any" minOccurs="0" maxOccurs="unbounded"/>
-        </xs:sequence>
-    </xs:complexType>
     <xs:complexType name="key_event_type">
         <xs:all>
-            <xs:element name="id" type="guid" maxOccurs="1" minOccurs="1"/>
-            <xs:element name="aop_wiki_id" type="xs:positiveInteger"/>
-            <xs:element name="title" type="xs:string" maxOccurs="1" minOccurs="1"/>
-            <xs:element name="short_name" type="xs:string" maxOccurs="1" minOccurs="1"/>
-            <xs:element name="creation_timestamp" type="xs:dateTime"/>
-            <xs:element name="last_modification_timestamp" type="xs:dateTime"/>
+            <xs:element name="name">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="biological_process" type="xs:string"/>
+                        <xs:element name="action" type="xs:string"/>
+                    </xs:sequence>
+
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="description" type="xhtml:Block"/>
+            <xs:element name="measurement" type="xhtml:Block" minOccurs="0"/>
+            <xs:element name="taxonomic_applicability" type="applicability_type" minOccurs="0"
+                maxOccurs="unbounded"/>
+            <xs:element name="evidence_supporting_taxonomic_applicability" type="xhtml:Block"
+                minOccurs="0"/>
             <xs:element name="biological_organization_level" minOccurs="0">
                 <xs:simpleType>
                     <xs:restriction base="xs:string">
                         <xs:enumeration value="Molecular"/>
-                        <xs:enumeration value="Organelle"/>
                         <xs:enumeration value="Cellular"/>
                         <xs:enumeration value="Tissue"/>
                         <xs:enumeration value="Organ"/>
-                        <xs:enumeration value="Organ System"/>
                         <xs:enumeration value="Individual"/>
                         <xs:enumeration value="Population"/>
-                        <xs:enumeration value="Species"/>
-                        <xs:enumeration value="Communities"/>
-                        <xs:enumeration value="Ecosystem"/>
-                        <xs:enumeration value="Biosphere"/>
                     </xs:restriction>
                 </xs:simpleType>
 
             </xs:element>
-            <xs:element name="description" type="xhtml:Block"/>
-            <xs:element name="measurement_methodology" type="xhtml:Block" minOccurs="0"/>
-            <xs:element name="evidence_supporting_taxonomic_applicability" type="xhtml:Block"
-                minOccurs="0"/>
-            <xs:element name="references" type="xhtml:Block" minOccurs="0"/>
-            <xs:element minOccurs="0" name="organ" type="biological_term_type"/>
-            <xs:element minOccurs="0" name="cell" type="biological_term_type"/>
-            <xs:element minOccurs="0" name="quality_assurance" type="qa_type"/>
-            <xs:element name="taxonomic_applicability" type="context" minOccurs="0"
-                maxOccurs="unbounded"/>
-            <xs:element name="source" default="" minOccurs="0">
-                <xs:simpleType>
-                    <xs:restriction base="xs:string">
-                        <xs:enumeration value="AOPWiki"/>
-                        <xs:enumeration value="Effectopedia"/>
-                        <xs:enumeration value="Intermediate Effects DB"/>
-                        <xs:enumeration value="AOP Xplorer"/>
-                        <xs:enumeration value="Other"/>
-                        <xs:enumeration value=""/>
-                    </xs:restriction>
-                </xs:simpleType>
-            </xs:element>
-            <xs:element name="source_internal_id" type="xs:string" minOccurs="0" maxOccurs="1"/>
-            <xs:element name="URI" type="xs:string" minOccurs="0" maxOccurs="1"/>
-            <xs:element name="associated_tests" type="xhtml:Block" minOccurs="0"/>
-            <xs:any minOccurs="0" namespace="##any" maxOccurs="unbounded"/>
         </xs:all>
-        <xs:anyAttribute/>
+        <xs:attribute name="ke_id" type="xs:string"/>
     </xs:complexType>
     <xs:complexType name="evidence_type">
         <xs:all>
@@ -113,12 +54,11 @@
             </xs:element>
             <xs:element name="link" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element name="description" type="xhtml:Block" minOccurs="0"/>
-            <xs:element name="URI" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
         </xs:all>
 
     </xs:complexType>
 
-    <xs:complexType name="context">
+    <xs:complexType name="applicability_type">
         <xs:all>
             <xs:element name="sex" minOccurs="0" maxOccurs="unbounded">
                 <xs:complexType>
@@ -204,113 +144,27 @@
                     </xs:complexContent>
                 </xs:complexType>
             </xs:element>
-            <xs:element name="URI" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="biological_compartment" type="xs:string" maxOccurs="unbounded"
-                minOccurs="0"/>
-            <xs:element name="time_to_manifestation" type="xs:string" maxOccurs="unbounded"
-                minOccurs="0"/>
-            <xs:element name="time_to_manifestation_range" type="xs:string" maxOccurs="unbounded"
-                minOccurs="0"/>
-            <xs:element name="generation" type="xs:string" maxOccurs="unbounded" minOccurs="0"/>
-            <xs:element name="other" type="xs:string" maxOccurs="unbounded" minOccurs="0"/>
-            <xs:any minOccurs="0" namespace="##any" maxOccurs="unbounded"/>
         </xs:all>
 
     </xs:complexType>
 
     <!--Define the AOP's main elements -->
-    <xs:complexType name="substance_info">
-        <xs:sequence>
-            <xs:element name="title" type="xs:string" minOccurs="1" maxOccurs="1"/>
-            <xs:element name="id" type="xs:string" minOccurs="1" maxOccurs="1"/>
-            <xs:element name="UUID" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="TYPE" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="IUC_NAME" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:any namespace="##any" maxOccurs="unbounded" minOccurs="0"/>
-            <xs:element name="constituent" type="constituent_type" minOccurs="0"
-                maxOccurs="unbounded"/>
-            <xs:element maxOccurs="unbounded" minOccurs="0" name="substance_properties"
-                type="propertyValues"/>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="propertyValues">
-        <xs:sequence>
-            <xs:element name="property" type="xs:string" minOccurs="1" maxOccurs="1"/>
-            <xs:element name="value" type="xs:string" minOccurs="1" maxOccurs="1"/>
-            <xs:element name="units" type="xs:string" minOccurs="0" maxOccurs="1"/>
-            <xs:element name="conditions" type="xs:string" minOccurs="0" maxOccurs="1"/>
-            <xs:element name="source" type="xs:string" minOccurs="0" maxOccurs="1"/>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="qa_type">
-        <xs:sequence>
-            <xs:element name="contributor" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="reviewer" type="xs:string" maxOccurs="unbounded" minOccurs="0"/>
-            <xs:element name="seal_of_approval" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="last_modified" type="xs:dateTime"/>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="status">
-        <xs:sequence>
-            <xs:element name="wiki_status">
-                <xs:simpleType>
-                    <xs:restriction base="xs:string">
-                        <xs:enumeration value="Open for Citation"/>
-                        <xs:enumeration value="Open for Adoption"/>
-                        <xs:enumeration value="Open for Comment"/>
-                        <xs:enumeration value="Not under Development"/>
-                        <xs:enumeration value="Under Development"/>
-                    </xs:restriction>
-                </xs:simpleType>
-            </xs:element>
-            <xs:element name="oecd_status">
-                <xs:simpleType>
-                    <xs:restriction base="xs:string">
-                        <xs:enumeration value="TFHA/WNT Endorsed"/>
-                        <xs:enumeration value="EAGMST Approved"/>
-                        <xs:enumeration value="EAGMST Under Review"/>
-                        <xs:enumeration value="Under Development"/>
-                    </xs:restriction>
-                </xs:simpleType>
-            </xs:element>
-            <xs:element name="saaop_status">
-                <xs:simpleType>
-                    <xs:restriction base="xs:string">
-                        <xs:enumeration value="Included in OECD Work Plan"/>
-                        <xs:enumeration value="Proposed for OECD Work Plan"/>
-                        <xs:enumeration value="Under Development"/>
-                        <xs:enumeration value="Archived"/>
-                    </xs:restriction>
-                </xs:simpleType>
-            </xs:element>
-        </xs:sequence>
-    </xs:complexType>
     <xs:element name="aop">
         <xs:complexType>
             <xs:all>
-                <xs:element name="aop_wiki_id" type="xs:positiveInteger"/>
-                <xs:element name="title">
+                <xs:element name="aop_id" type="xs:positiveInteger"/>
+                <xs:element name="long_title">
                     <xs:simpleType>
                         <xs:restriction base="xs:string">
                             <xs:pattern value=".* leading to .*"/>
                         </xs:restriction>
                     </xs:simpleType>
                 </xs:element>
-                <xs:element name="short_name" type="xs:string"/>
+                <xs:element name="short_title" type="xs:string"/>
                 <xs:element name="authors" type="xhtml:Block"/>
+                <xs:element name="status" type="xhtml:Block"/>
 
-                <xs:element name="status">
-                    <xs:simpleType>
-                        <xs:restriction base="xs:string">
-                            <xs:enumeration value="OECD Endorsed (WNT or TFHA)"/>
-                            <xs:enumeration value="EAGMST Approved"/>
-                            <xs:enumeration value="EAGMST Under Review"/>
-                            <xs:enumeration value="EAGMST Under Development"/>
-                            <xs:enumeration value="SAAOP AOP Under Development"/>
-                        </xs:restriction>
-                    </xs:simpleType>
-                </xs:element>
-                <xs:element name="creation_timestamp" type="xs:dateTime"/>
+                <xs:element name="publication_timestamp" type="xs:dateTime"/>
                 <xs:element name="last_modification_timestamp" type="xs:dateTime"/>
                 <!--Should have a defined closed vocabulary - Still under consideration -->
                 <!--Could be changed to a more comprehensive structure -->
@@ -321,23 +175,18 @@
                         <xs:complexContent>
                             <xs:extension base="key_event_type">
                                 <xs:all>
-                                    <xs:element name="chemical_initiator" maxOccurs="unbounded"
-                                        minOccurs="0">
+                                    <xs:element name="chemical_initiator">
                                         <xs:complexType>
                                             <xs:all>
                                                 <xs:element name="title" type="xs:string"/>
-                                                <xs:element minOccurs="0" name="quality_assurance"
-                                                  type="qa_type"/>
                                                 <xs:element name="name" type="xs:string"/>
                                                 <xs:element name="description" type="xhtml:Block"/>
-                                                <xs:element maxOccurs="1" minOccurs="0"
-                                                  name="chemical_info" type="chemical_info_type"/>
-                                                <xs:element maxOccurs="unbounded" minOccurs="0"
-                                                  name="structural_properties" type="propertyValues"/>
                                                 <xs:element name="synonym" type="xs:string"
                                                   minOccurs="0" maxOccurs="unbounded"/>
-                                                <xs:element maxOccurs="unbounded" minOccurs="0"
-                                                  name="associated_substances" type="substance_info"/>
+                                                <xs:element name="casrn" type="xs:string"
+                                                  minOccurs="0" maxOccurs="unbounded"/>
+                                                <xs:element name="smiles" type="xs:string"
+                                                  minOccurs="0" maxOccurs="unbounded"/>
                                                 <xs:element name="link" type="xs:string"
                                                   minOccurs="0" maxOccurs="unbounded"/>
                                                 <xs:element name="exposure_characterization"
@@ -360,7 +209,6 @@
                         <xs:complexContent>
                             <xs:extension base="key_event_type">
                                 <xs:all>
-                                    <xs:element name="examples" type="xhtml:Block" minOccurs="0"/>
                                     <xs:element name="regulatory_relevance" type="xhtml:Block"
                                         minOccurs="0"/>
                                     <xs:element name="organs_affected" maxOccurs="unbounded"
@@ -387,12 +235,12 @@
                 <xs:element name="key_event_relationship" maxOccurs="unbounded">
                     <xs:complexType>
                         <xs:all>
-                            <xs:element name="aop_wiki_id" type="xs:positiveInteger"/>
+                            <xs:element name="ker_id" type="xs:positiveInteger"/>
                             <xs:element name="title">
                                 <xs:complexType>
                                     <xs:sequence>
-                                        <xs:element name="upstream_id" type="guid"/>
-                                        <xs:element name="directness">
+                                        <xs:element name="upstream_ke_id" type="xs:positiveInteger"/>
+                                        <xs:element name="adjacency">
                                             <xs:simpleType>
                                                 <xs:restriction base="xs:string">
                                                   <xs:enumeration value="directly leads to"/>
@@ -400,26 +248,13 @@
                                                 </xs:restriction>
                                             </xs:simpleType>
                                         </xs:element>
-                                        <xs:element name="downstream_id" type="guid"/>
-                                        <xs:element name="detail_level" minOccurs="0"
-                                            default="Hypothetical">
-                                            <xs:simpleType>
-                                                <xs:restriction base="xs:string">
-                                                  <xs:enumeration value="Hypothetical"/>
-                                                  <xs:enumeration value="One to One"/>
-                                                  <xs:enumeration value="Proportional"/>
-                                                  <xs:enumeration value="Treshold"/>
-                                                  <xs:enumeration value="Response-Response"/>
-                                                </xs:restriction>
-                                            </xs:simpleType>
-                                        </xs:element>
+                                        <xs:element name="downstream_ke_id"
+                                            type="xs:positiveInteger"/>
                                     </xs:sequence>
                                 </xs:complexType>
                             </xs:element>
 
-                            <xs:element minOccurs="0" name="quality_assurance" type="qa_type"/>
                             <xs:element name="description" type="xhtml:Block"/>
-                            <xs:element name="temporal_concordance" type="xhtml:Block" minOccurs="0"/>
                             <xs:element name="weight_of_evidence" maxOccurs="unbounded"
                                 minOccurs="0">
                                 <xs:complexType>
@@ -459,33 +294,14 @@
                                         </xs:element>
 
                                         <xs:element name="description" type="xhtml:Block"/>
-                                        <xs:element name="support_evidence" type="xhtml:Block"
-                                            minOccurs="0"/>
                                     </xs:sequence>
 
                                 </xs:complexType>
                             </xs:element>
-                            <xs:element name="taxonomic_applicability" type="context" minOccurs="0"
-                                maxOccurs="unbounded"/>
+                            <xs:element name="taxonomic_applicability" type="applicability_type"
+                                minOccurs="0" maxOccurs="unbounded"/>
                             <xs:element name="evidence_supporting_taxonomic_applicability"
                                 type="xhtml:Block" minOccurs="0"/>
-                            <xs:element name="source" default="" minOccurs="0">
-                                <xs:simpleType>
-                                    <xs:restriction base="xs:string">
-                                        <xs:enumeration value="AOPWiki"/>
-                                        <xs:enumeration value="Effectopedia"/>
-                                        <xs:enumeration value="Intermediate Effects DB"/>
-                                        <xs:enumeration value="AOP Xplorer"/>
-                                        <xs:enumeration value="Other"/>
-                                        <xs:enumeration value=""/>
-                                    </xs:restriction>
-                                </xs:simpleType>
-                            </xs:element>
-                            <xs:element name="source_internal_id" type="xs:string" minOccurs="0"
-                                maxOccurs="unbounded"/>
-                            <xs:any minOccurs="0" namespace="##any" maxOccurs="unbounded"/>
-                            <xs:element name="creation_timestamp" type="xs:dateTime"/>
-                            <xs:element name="last_modification_timestamp" type="xs:dateTime"/>
                         </xs:all>
 
                     </xs:complexType>
@@ -504,62 +320,32 @@
                                     </xs:restriction>
                                 </xs:simpleType>
                             </xs:element>
-                            <xs:element name="URI" type="xs:string" minOccurs="0"
-                                maxOccurs="unbounded"/>
                         </xs:sequence>
 
                     </xs:complexType>
                 </xs:element>
-                <xs:element name="overall_assessment" maxOccurs="1" minOccurs="0">
+                <xs:element name="overall_assessment" maxOccurs="unbounded" minOccurs="0">
                     <xs:complexType>
                         <xs:all>
                             <xs:element name="description" type="xhtml:Block" minOccurs="0"/>
-                            <xs:element name="applicability" type="xhtml:Block" minOccurs="0"/>
-                            <xs:element name="KE_essentiality_summary" type="xhtml:Block"
-                                minOccurs="0"> </xs:element>
                             <xs:element name="weight_of_evidence_summary" type="xhtml:Block"
+                                minOccurs="0"> </xs:element>
+                            <xs:element name="KE_essentiality_summary" type="xhtml:Block"
                                 minOccurs="0"> </xs:element>
                             <xs:element name="quantitative_considerations" type="xhtml:Block"
                                 minOccurs="0"> </xs:element>
-                            <xs:element name="URI" type="xs:string" minOccurs="0"
+                            <xs:element name="applicability" type="applicability_type" minOccurs="0"
                                 maxOccurs="unbounded"/>
-                            <xs:element name="optional_consideration" type="xhtml:Block"
-                                minOccurs="0"> </xs:element>
                         </xs:all>
 
                     </xs:complexType>
                 </xs:element>
+
                 <xs:element name="potential_applications" type="xhtml:Block" minOccurs="0"/>
-                <xs:element name="source" default="" minOccurs="0">
-                    <xs:simpleType>
-                        <xs:restriction base="xs:string">
-                            <xs:enumeration value="AOPWiki"/>
-                            <xs:enumeration value="Effectopedia"/>
-                            <xs:enumeration value="Intermediate Effects DB"/>
-                            <xs:enumeration value="AOP Xplorer"/>
-                            <xs:enumeration value="Other"/>
-                            <xs:enumeration value=""/>
-                        </xs:restriction>
-                    </xs:simpleType>
-                </xs:element>
-                <xs:element name="source_internal_id" type="xs:string" minOccurs="0"
-                    maxOccurs="unbounded"/>
-                <xs:element name="URI" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-                <xs:element name="references" type="xhtml:Block" minOccurs="0"/>
-                <xs:any minOccurs="0" namespace="##any" maxOccurs="unbounded"/>
+
+
             </xs:all>
 
-            <xs:anyAttribute/>
         </xs:complexType>
     </xs:element>
-    <xs:complexType name="biological_term_type">
-        <xs:sequence>
-            <xs:element name="source_id" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="synonym" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="official_name" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="source" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="creation_timestamp" type="xs:dateTime"/>
-            <xs:element name="last_modification_timestamp" type="xs:dateTime"/>
-        </xs:sequence>
-    </xs:complexType>
 </xs:schema>

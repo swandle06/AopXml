@@ -101,7 +101,7 @@
                 <xs:element minOccurs="0" name="organ_term" type="biological_term_type"/>
                 <xs:element minOccurs="0" name="cell_term" type="biological_term_type"/>
                 <xs:element minOccurs="0" name="quality_assurance" type="qa_type"/>
-                <xs:element name="applicability" type="applicability_type" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="applicability" type="applicability_type" minOccurs="0" />
                 <xs:element name="source" minOccurs="0">
                     <xs:simpleType>
                         <xs:restriction base="xs:string">
@@ -373,14 +373,12 @@
         <xs:sequence>
             <xs:element name="title" type="xs:string" minOccurs="1" maxOccurs="1"/>
             <xs:element name="id" type="xs:string" minOccurs="1" maxOccurs="1"/>
-            <xs:element name="UUID" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="TYPE" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="IUC_NAME" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="type" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="iuc_name" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
             <!-- <xs:any namespace="##any" maxOccurs="unbounded" minOccurs="0"/> -->
             <!-- <xs:element name="constituent" type="constituent_type" minOccurs="0"
                 maxOccurs="unbounded"/> -->
-            <xs:element maxOccurs="unbounded" minOccurs="0" name="substance_properties"
-                type="property_values"/>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="substance_properties" type="property_values"/>
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="property_values">
@@ -541,8 +539,7 @@
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
-                <xs:element name="applicability" type="applicability_type" minOccurs="0"
-                    maxOccurs="unbounded"/>
+                <xs:element name="applicability" type="applicability_type" minOccurs="0"/>
                 <xs:element name="overall_assessment" maxOccurs="1" minOccurs="0">
                     <xs:complexType>
                         <xs:all>

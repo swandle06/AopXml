@@ -33,8 +33,8 @@
                 <xs:element name="synonyms" minOccurs="1">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="synonym" minOccurs="1" maxOccurs="unbounded" type="xs:string">
-                            </xs:element>
+                            <xs:element name="synonym" minOccurs="1" maxOccurs="unbounded"
+                                type="xs:string"> </xs:element>
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
@@ -43,7 +43,7 @@
                 <xs:element name="dsstox_id" type="xs:string" minOccurs="0"/>
                 <!-- <xs:any namespace="##any" minOccurs="0" maxOccurs="unbounded"/> -->
             </xs:sequence>
-            <xs:attribute name="id" type="guid"/>
+              <xs:attribute name="id" type="guid" use="required"/>
         </xs:complexType>
     </xs:element>
     <xs:element name="biological_object">
@@ -54,7 +54,7 @@
                         <xs:element name="biological_organization"
                             type="biological_organization_level_type"/>
                     </xs:sequence>
-                    <xs:attribute name="id" type="guid"/>
+                    <xs:attribute name="id" type="guid" use="required"/>
                 </xs:extension>
             </xs:complexContent>
         </xs:complexType>
@@ -67,7 +67,7 @@
                         <xs:element name="biological_organization"
                             type="biological_organization_level_type"/>
                     </xs:sequence>
-                    <xs:attribute name="id" type="guid"/>
+                      <xs:attribute name="id" type="guid" use="required"/>
                 </xs:extension>
             </xs:complexContent>
         </xs:complexType>
@@ -76,7 +76,7 @@
         <xs:complexType>
             <xs:complexContent>
                 <xs:extension base="biological_term_type">
-                    <xs:attribute name="id" type="guid"/>
+                      <xs:attribute name="id" type="guid" use="required"/>
                 </xs:extension>
             </xs:complexContent>
         </xs:complexType>
@@ -101,11 +101,10 @@
                 <xs:element minOccurs="0" name="organ_term" type="biological_term_type"/>
                 <xs:element minOccurs="0" name="cell_term" type="biological_term_type"/>
                 <xs:element minOccurs="0" name="quality_assurance" type="qa_type"/>
-                <xs:element name="applicability" type="applicability_type" minOccurs="0" />
+                <xs:element name="applicability" type="applicability_type" minOccurs="0"/>
                 <xs:element name="source" minOccurs="0">
                     <xs:simpleType>
                         <xs:restriction base="xs:string">
-                            <xs:enumeration value="AOPWiki"/>
                             <xs:enumeration value="Effectopedia"/>
                             <xs:enumeration value="Intermediate Effects DB"/>
                             <xs:enumeration value="AOP Xplorer"/>
@@ -148,9 +147,7 @@
                     </xs:complexType>
                 </xs:element>
             </xs:sequence>
-
-            <xs:attribute name="aopwiki_id" type="xs:string"/>
-            <xs:attribute name="id" type="guid"/>
+              <xs:attribute name="id" type="guid" use="required"/>
         </xs:complexType>
     </xs:element>
     <xs:element name="key_event_relationship">
@@ -201,8 +198,10 @@
 
                     </xs:complexType>
                 </xs:element>
-                <xs:element name="taxonomic_applicability" type="applicability_type" minOccurs="0" maxOccurs="unbounded"/>
-                <xs:element name="evidence_supporting_taxonomic_applicability" type="xs:string" minOccurs="0"/>
+                <xs:element name="taxonomic_applicability" type="applicability_type" minOccurs="0"
+                    maxOccurs="unbounded"/>
+                <xs:element name="evidence_supporting_taxonomic_applicability" type="xs:string"
+                    minOccurs="0"/>
                 <xs:element name="source" default="" minOccurs="0">
                     <xs:simpleType>
                         <xs:restriction base="xs:string">
@@ -221,8 +220,8 @@
                 <xs:element name="last_modification_timestamp" type="xs:dateTime" minOccurs="0"/>
                 <xs:element name="references" type="xs:string" minOccurs="0"/>
             </xs:all>
-            <xs:attribute name="aopwiki_id" type="xs:string"/>
-            <xs:attribute name="id" type="guid"/>
+
+              <xs:attribute name="id" type="guid" use="required"/>
         </xs:complexType>
     </xs:element>
     <xs:element name="stressor">
@@ -250,15 +249,17 @@
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
-                <xs:element maxOccurs="unbounded" minOccurs="0" name="structural_properties" type="property_values"/>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="structural_properties"
+                    type="property_values"/>
                 <xs:element name="synonym" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-                <xs:element maxOccurs="unbounded" minOccurs="0" name="associated_substances" type="substance_info"/>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="associated_substances"
+                    type="substance_info"/>
                 <xs:element name="link" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-                <xs:element name="exposure_characterization" type="xs:string" minOccurs="0" />
+                <xs:element name="exposure_characterization" type="xs:string" minOccurs="0"/>
             </xs:all>
 
-            <xs:attribute name="id" type="guid"/>
-            <xs:attribute name="aopwiki_id" type="xs:string"/>
+              <xs:attribute name="id" type="guid" use="required"/>
+
         </xs:complexType>
     </xs:element>
     <xs:complexType name="evidence_type">
@@ -378,7 +379,8 @@
             <!-- <xs:any namespace="##any" maxOccurs="unbounded" minOccurs="0"/> -->
             <!-- <xs:element name="constituent" type="constituent_type" minOccurs="0"
                 maxOccurs="unbounded"/> -->
-            <xs:element maxOccurs="unbounded" minOccurs="0" name="substance_properties" type="property_values"/>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="substance_properties"
+                type="property_values"/>
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="property_values">
@@ -522,7 +524,7 @@
                                         <xs:element name="evidence" type="confidence_level_type">
                                         </xs:element>
                                     </xs:sequence>
-                                    <xs:attribute name="id" type="guid"/>
+                                      <xs:attribute name="id" type="guid" use="required"/>
                                 </xs:complexType>
                             </xs:element>
                         </xs:sequence>
@@ -592,7 +594,7 @@
                 </xs:element>
             </xs:all>
 
-            <xs:attribute name="aopwiki_id" type="xs:string"/>
+
             <xs:anyAttribute/>
         </xs:complexType>
     </xs:element>
@@ -633,4 +635,15 @@
     </xs:complexType>
 
     <xs:element name="taxonomy" type="biological_term_type"> </xs:element>
+    <xs:element name="vendor-specific">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:any/>
+            </xs:sequence>
+            <xs:attribute name="id" type="guid" use="required"/>
+            <xs:attribute name="name" type="xs:string" use="required"/>
+            <xs:attribute name="version" type="xs:string" use="optional"/>
+
+        </xs:complexType>
+    </xs:element>
 </xs:schema>

@@ -361,7 +361,7 @@
                 <xs:complexType>
                     <xs:complexContent>
                         <xs:extension base="evidence_type">
-                            <xs:attribute name="taxonomy_term_id" type="guid"/>
+                            <xs:attribute name="taxonomy_id" type="guid"/>
                         </xs:extension>
                     </xs:complexContent>
                 </xs:complexType>
@@ -647,5 +647,5 @@
         </xs:sequence>
     </xs:complexType>
 
-    <xs:element name="taxonomy_term" type="biological_term_type"> </xs:element>
+    <xs:element name="taxonomy" type="biological_term_type"> </xs:element>
 </xs:schema>

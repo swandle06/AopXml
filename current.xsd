@@ -638,10 +638,10 @@
     </xs:simpleType>
     <xs:complexType name="biological_term_type">
         <xs:sequence>
-            <xs:element maxOccurs="unbounded" minOccurs="0" name="source_id" type="xs:string"/>
-            <xs:element maxOccurs="unbounded" minOccurs="0" name="source" type="xs:string"/>
-            <xs:element maxOccurs="unbounded" minOccurs="0" name="name" type="xs:string"/>
-            <xs:element maxOccurs="unbounded" minOccurs="0" name="synonym" type="xs:string"/>
+            <xs:element minOccurs="0" name="source_id" type="xs:string"/>
+            <xs:element minOccurs="0" name="source" type="xs:string"/>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element minOccurs="0" name="synonym" type="xs:string"/>
             <xs:element minOccurs="0" name="creation_timestamp" type="xs:dateTime"/>
             <xs:element minOccurs="0" name="last_modification_timestamp" type="xs:dateTime"/>
         </xs:sequence>

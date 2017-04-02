@@ -105,6 +105,7 @@
                 <xs:element name="source" minOccurs="0">
                     <xs:simpleType>
                         <xs:restriction base="xs:string">
+                            <xs:enumeration value="AOPWiki"/>
                             <xs:enumeration value="Effectopedia"/>
                             <xs:enumeration value="Intermediate Effects DB"/>
                             <xs:enumeration value="AOP Xplorer"/>
@@ -202,7 +203,7 @@
                     maxOccurs="unbounded"/>
                 <xs:element name="evidence_supporting_taxonomic_applicability" type="xs:string"
                     minOccurs="0"/>
-                <xs:element name="source" default="" minOccurs="0">
+                <xs:element name="source" minOccurs="0">
                     <xs:simpleType>
                         <xs:restriction base="xs:string">
                             <xs:enumeration value="AOPWiki"/>
@@ -210,7 +211,6 @@
                             <xs:enumeration value="Intermediate Effects DB"/>
                             <xs:enumeration value="AOP Xplorer"/>
                             <xs:enumeration value="Other"/>
-                            <xs:enumeration value=""/>
                         </xs:restriction>
                     </xs:simpleType>
                 </xs:element>
@@ -560,7 +560,7 @@
                     </xs:complexType>
                 </xs:element>
                 <xs:element name="potential_applications" type="xs:string" minOccurs="0"/>
-                <xs:element name="source" default="" minOccurs="0">
+                <xs:element name="source" minOccurs="0">
                     <xs:simpleType>
                         <xs:restriction base="xs:string">
                             <xs:enumeration value="AOPWiki"/>
@@ -568,7 +568,6 @@
                             <xs:enumeration value="Intermediate Effects DB"/>
                             <xs:enumeration value="AOP Xplorer"/>
                             <xs:enumeration value="Other"/>
-                            <xs:enumeration value=""/>
                         </xs:restriction>
                     </xs:simpleType>
                 </xs:element>

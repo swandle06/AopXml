@@ -260,7 +260,7 @@
                     </xs:complexType>
                 </xs:element>
                 <xs:element maxOccurs="unbounded" minOccurs="0" name="structural_properties"
-                    type="propertyValues"/>
+                    type="property_values"/>
                 <xs:element name="synonym" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
                 <xs:element maxOccurs="unbounded" minOccurs="0" name="associated_substances"
                     type="substance_info"/>
@@ -392,10 +392,10 @@
             <!-- <xs:element name="constituent" type="constituent_type" minOccurs="0"
                 maxOccurs="unbounded"/> -->
             <xs:element maxOccurs="unbounded" minOccurs="0" name="substance_properties"
-                type="propertyValues"/>
+                type="property_values"/>
         </xs:sequence>
     </xs:complexType>
-    <xs:complexType name="propertyValues">
+    <xs:complexType name="property_values">
         <xs:sequence>
             <xs:element name="property" type="xs:string" minOccurs="1" maxOccurs="1"/>
             <xs:element name="value" type="xs:string" minOccurs="1" maxOccurs="1"/>

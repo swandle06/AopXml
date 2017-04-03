@@ -633,7 +633,16 @@
         </xs:sequence>
     </xs:complexType>
 
-    <xs:element name="taxonomy" type="biological_term_type"> </xs:element>
+    <xs:element name="taxonomy">
+        <xs:complexType>
+            <xs:complexContent>
+                <xs:extension base="biological_term_type">
+                    <xs:attribute name="id" type="guid" use="required"/>
+                </xs:extension>
+            </xs:complexContent>
+        </xs:complexType>
+    </xs:element>
+    
     <xs:element name="vendor-specific">
         <xs:complexType>
             <xs:sequence>

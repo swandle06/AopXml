@@ -42,6 +42,8 @@
                 <xs:element name="structural_diagram_2d" type="xs:hexBinary" minOccurs="0"/>
                 <xs:element name="dsstox_id" type="xs:string" minOccurs="0"/>
                 <!-- <xs:any namespace="##any" minOccurs="0" maxOccurs="unbounded"/> -->
+                <xs:element minOccurs="0" name="creation_timestamp" type="xs:dateTime"/>
+                <xs:element minOccurs="0" name="last_modification_timestamp" type="xs:dateTime"/>
             </xs:sequence>
               <xs:attribute name="id" type="guid" use="required"/>
         </xs:complexType>

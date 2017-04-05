@@ -226,20 +226,15 @@
               <xs:attribute name="id" type="guid" use="required"/>
         </xs:complexType>
     </xs:element>
+    
     <xs:element name="stressor">
         <xs:complexType>
-            <xs:all>
-                <xs:element name="title">
-                    <xs:complexType>
-                        <xs:simpleContent>
-                            <xs:extension base="xs:string"/>
-                        </xs:simpleContent>
-                    </xs:complexType>
-                </xs:element>
+            <xs:sequence>
+                <xs:element name="title" type="xs:string"/>
                 <xs:element minOccurs="0" name="quality_assurance" type="qa_type"/>
                 <xs:element name="name" type="xs:string"/>
                 <xs:element name="description" type="xs:string"/>
-                <xs:element name="chemicals" maxOccurs="unbounded">
+                <xs:element name="chemicals" minOccurs="1">
                     <xs:complexType mixed="false">
                         <xs:sequence>
                             <xs:element name="chemical_initiator" maxOccurs="unbounded">
@@ -258,9 +253,11 @@
                     type="substance_info"/>
                 <xs:element name="link" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
                 <xs:element name="exposure_characterization" type="xs:string" minOccurs="0"/>
-            </xs:all>
+                <xs:element minOccurs="0" name="creation_timestamp" type="xs:dateTime"/>
+                <xs:element minOccurs="0" name="last_modification_timestamp" type="xs:dateTime"/>
+            </xs:sequence>
 
-              <xs:attribute name="id" type="guid" use="required"/>
+            <xs:attribute name="id" type="guid" use="required"/>
 
         </xs:complexType>
     </xs:element>

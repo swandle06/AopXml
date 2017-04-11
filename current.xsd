@@ -134,7 +134,7 @@
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
-                <xs:element name="key_event_stressors" maxOccurs="unbounded">
+                <xs:element name="key_event_stressors">
                     <xs:complexType mixed="false">
                         <xs:sequence>
                             <xs:element name="key_event_stressor" maxOccurs="unbounded">
@@ -566,13 +566,11 @@
                         </xs:restriction>
                     </xs:simpleType>
                 </xs:element>
-                <xs:element name="source_internal_id" type="xs:string" minOccurs="0"
-                    maxOccurs="unbounded"/>
-                <xs:element name="URI" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="source_internal_id" type="xs:string" minOccurs="0"/>
+                <xs:element name="uri" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
                 <xs:element name="references" type="xs:string" minOccurs="0"/>
-                <!-- <xs:any minOccurs="0" namespace="##any" maxOccurs="unbounded"/> -->
-                <xs:element name="aop_stressors" maxOccurs="unbounded">
-                    <xs:complexType mixed="false">
+                <xs:element name="aop_stressors">
+                    <xs:complexType>
                         <xs:sequence>
                             <xs:element name="aop_stressor" maxOccurs="unbounded">
                                 <xs:complexType>

@@ -181,7 +181,7 @@
                 <xs:element name="weight_of_evidence" maxOccurs="unbounded" minOccurs="0">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="value" type="confidence_level_type"> </xs:element>
+                            <xs:element name="value" type="xs:string"></xs:element>
                             <xs:element name="biological_plausibility" type="xs:string"
                                 minOccurs="0"/>
                             <xs:element name="emperical_support_linkage" type="xs:string"
@@ -500,7 +500,7 @@
                         <xs:attribute name="key_event_id" type="guid"/>
                     </xs:complexType>
                 </xs:element>
-                <xs:element name="key_event_relationships" maxOccurs="unbounded">
+                <xs:element name="key_event_relationships">
                     <xs:complexType mixed="false">
                         <xs:sequence>
                             <xs:element name="relationship" maxOccurs="unbounded">

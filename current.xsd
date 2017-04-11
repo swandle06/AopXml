@@ -3,10 +3,6 @@
     xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" elementFormDefault="qualified"
     vc:minVersion="1.1" targetNamespace="http://www.aopkb.org/aop_xml"
     xmlns="http://www.aopkb.org/aop_xml">
-    <!-- Importing XHTML namespace -->
-    <xs:import namespace="http://www.w3.org/1999/xhtml"
-        schemaLocation="http://www.w3.org/2002/08/xhtml/xhtml1-strict.xsd"/>
-    <!--Define the complex types for key events (KE), molecular initiating events (MIE), adverse outcome (AO) and applicability -->
 
     <xs:simpleType name="guid">
         <xs:annotation>
@@ -20,6 +16,7 @@
             />
         </xs:restriction>
     </xs:simpleType>
+    
     <xs:element name="chemical">
         <xs:complexType>
             <xs:sequence>
@@ -61,6 +58,7 @@
             </xs:complexContent>
         </xs:complexType>
     </xs:element>
+    
     <xs:element name="biological_process">
         <xs:complexType>
             <xs:complexContent>
@@ -74,6 +72,7 @@
             </xs:complexContent>
         </xs:complexType>
     </xs:element>
+    
     <xs:element name="biological_action">
         <xs:complexType>
             <xs:complexContent>
@@ -83,8 +82,6 @@
             </xs:complexContent>
         </xs:complexType>
     </xs:element>
-
-
 
     <xs:element name="key_event">
         <xs:complexType>
@@ -150,9 +147,10 @@
                     </xs:complexType>
                 </xs:element>
             </xs:sequence>
-              <xs:attribute name="id" type="guid" use="required"/>
+            <xs:attribute name="id" type="guid" use="required"/>
         </xs:complexType>
     </xs:element>
+    
     <xs:element name="key_event_relationship">
         <xs:complexType>
             <xs:all>
@@ -223,7 +221,7 @@
                 <xs:element name="references" type="xs:string" minOccurs="0"/>
             </xs:all>
 
-              <xs:attribute name="id" type="guid" use="required"/>
+            <xs:attribute name="id" type="guid" use="required"/>
         </xs:complexType>
     </xs:element>
     
@@ -361,7 +359,6 @@
             <xs:element name="generation" type="xs:string" maxOccurs="unbounded" minOccurs="0"/>
             <xs:element name="other" type="xs:string" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
-
     </xs:complexType>
 
     <!--Define the AOP's main elements -->
@@ -378,6 +375,7 @@
                 type="property_values"/>
         </xs:sequence>
     </xs:complexType>
+    
     <xs:complexType name="property_values">
         <xs:sequence>
             <xs:element name="property" type="xs:string" minOccurs="1" maxOccurs="1"/>
@@ -387,6 +385,7 @@
             <xs:element name="source" type="xs:string" minOccurs="0" maxOccurs="1"/>
         </xs:sequence>
     </xs:complexType>
+    
     <xs:complexType name="qa_type">
         <xs:sequence>
             <xs:element name="contributor" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
@@ -395,6 +394,7 @@
             <xs:element name="last_modified" type="xs:dateTime"/>
         </xs:sequence>
     </xs:complexType>
+    
     <xs:complexType name="status">
         <xs:sequence>
             <xs:element name="wiki_status">
@@ -443,7 +443,6 @@
                 </xs:element>
                 <xs:element name="short_name" type="xs:string"/>
                 <xs:element name="authors" type="xs:string"/>
-
                 <xs:element name="OECD_status">
                     <xs:simpleType>
                         <xs:restriction base="xs:string">
@@ -551,7 +550,6 @@
                             <xs:element name="uri" type="xs:string" minOccurs="0"
                                 maxOccurs="unbounded"/>
                         </xs:all>
-
                     </xs:complexType>
                 </xs:element>
                 <xs:element name="potential_applications" type="xs:string" minOccurs="0"/>
@@ -588,6 +586,7 @@
             <xs:attribute name="id" type="guid" use="required" />
         </xs:complexType>
     </xs:element>
+    
     <xs:simpleType name="biological_organization_level_type">
         <xs:restriction base="xs:string">
             <xs:enumeration value="Molecular"/>
@@ -604,6 +603,7 @@
             <xs:enumeration value="Biosphere"/>
         </xs:restriction>
     </xs:simpleType>
+    
     <xs:simpleType name="confidence_level_type">
         <xs:restriction base="xs:string">
             <xs:enumeration value="Very strong"/>
@@ -613,6 +613,7 @@
             <xs:enumeration value="not specified"/>
         </xs:restriction>
     </xs:simpleType>
+    
     <xs:complexType name="biological_term_type">
         <xs:sequence>
             <xs:element minOccurs="0" name="source_id" type="xs:string"/>
@@ -642,7 +643,6 @@
             <xs:attribute name="id" type="guid" use="required"/>
             <xs:attribute name="name" type="xs:string" use="required"/>
             <xs:attribute name="version" type="xs:string" use="optional"/>
-
         </xs:complexType>
     </xs:element>
 </xs:schema>

@@ -430,9 +430,10 @@
             </xs:element>
         </xs:sequence>
     </xs:complexType>
+    
     <xs:element name="aop">
         <xs:complexType>
-            <xs:all>
+            <xs:sequence>
                 <xs:element name="title">
                     <xs:simpleType>
                         <xs:restriction base="xs:string">
@@ -489,8 +490,7 @@
                                         <xs:extension base="evidence_type">
                                             <xs:sequence>
                                                 <xs:element name="synonym" type="xs:string"/>
-                                                <xs:element name="scientific_name" type="xs:string"
-                                                />
+                                                <xs:element name="scientific_name" type="xs:string"/>
                                             </xs:sequence>
                                         </xs:extension>
                                     </xs:complexContent>
@@ -504,7 +504,7 @@
                     <xs:complexType mixed="false">
                         <xs:sequence>
                             <xs:element name="relationship" maxOccurs="unbounded">
-                                <xs:complexType mixed="false">
+                                <xs:complexType>
                                     <xs:sequence>
                                         <xs:element name="directness">
                                             <xs:simpleType>
@@ -584,10 +584,8 @@
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
-            </xs:all>
-
-
-            <xs:anyAttribute/>
+            </xs:sequence>
+            <xs:attribute name="id" type="guid" use="required" />
         </xs:complexType>
     </xs:element>
     <xs:simpleType name="biological_organization_level_type">

@@ -443,26 +443,7 @@
                 </xs:element>
                 <xs:element name="short_name" type="xs:string"/>
                 <xs:element name="authors" type="xs:string"/>
-                <xs:element name="OECD_status">
-                    <xs:simpleType>
-                        <xs:restriction base="xs:string">
-                            <xs:enumeration value="Endorsed (WNT or TFHA)"/>
-                            <xs:enumeration value="Approved"/>
-                            <xs:enumeration value="Under Review"/>
-                            <xs:enumeration value="Under Development"/>
-                        </xs:restriction>
-                    </xs:simpleType>
-                </xs:element>
-                <xs:element name="saaop_status">
-                    <xs:simpleType>
-                        <xs:restriction base="xs:string">
-                            <xs:enumeration value="Included in OECD work plan"/>
-                            <xs:enumeration value="Proposed for OECD work plan"/>
-                            <xs:enumeration value="Under development"/>
-                            <xs:enumeration value="Archived"/>
-                        </xs:restriction>
-                    </xs:simpleType>
-                </xs:element>
+                <xs:element name="status" type="status" />
                 <xs:element name="creation_timestamp" type="xs:dateTime"/>
                 <xs:element name="last_modification_timestamp" type="xs:dateTime"/>
                 <!--Should have a defined closed vocabulary - Still under consideration -->

@@ -119,7 +119,7 @@
                 <xs:element name="URI" type="xs:string" minOccurs="0" maxOccurs="1"/>
                 <xs:element name="associated_tests" type="xs:string" minOccurs="0"/>
                 <!-- <xs:any minOccurs="0" namespace="##any" maxOccurs="unbounded"/> -->
-                <xs:element name="biological_events" maxOccurs="unbounded" minOccurs="0">
+                <xs:element name="biological_events" minOccurs="0">
                     <xs:complexType mixed="false">
                         <xs:sequence>
                             <xs:element name="event" maxOccurs="unbounded">

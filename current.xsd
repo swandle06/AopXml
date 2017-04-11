@@ -269,7 +269,7 @@
     </xs:complexType>
 
     <xs:complexType name="applicability_type">
-        <xs:all>
+        <xs:sequence>
             <xs:element name="sex" minOccurs="0" maxOccurs="unbounded">
                 <xs:complexType>
                     <xs:complexContent>
@@ -298,7 +298,7 @@
                     <xs:complexContent>
                         <xs:extension base="evidence_type">
                             <xs:sequence>
-                                <xs:element name="life_stage" minOccurs="0" maxOccurs="unbounded">
+                                <xs:element name="life_stage" minOccurs="0">
                                     <xs:simpleType>
                                         <xs:restriction base="xs:string">
                                             <xs:enumeration value="Birth to  &lt; 1 month"/>
@@ -360,8 +360,7 @@
                 minOccurs="0"/>
             <xs:element name="generation" type="xs:string" maxOccurs="unbounded" minOccurs="0"/>
             <xs:element name="other" type="xs:string" maxOccurs="unbounded" minOccurs="0"/>
-            <!-- <xs:any minOccurs="0" namespace="##any" maxOccurs="unbounded"/> -->
-        </xs:all>
+        </xs:sequence>
 
     </xs:complexType>
 

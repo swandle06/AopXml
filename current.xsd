@@ -141,7 +141,7 @@
                                 <xs:complexType>
                                     <xs:complexContent>
                                         <xs:extension base="evidence_type">
-                                            <xs:attribute name="stressor_id" type="guid"/>
+                                            <xs:attribute name="id" type="guid" use="required"/>
                                         </xs:extension>
                                     </xs:complexContent>
                                 </xs:complexType>
@@ -578,7 +578,7 @@
                                 <xs:complexType>
                                     <xs:complexContent>
                                         <xs:extension base="evidence_type">
-                                            <xs:attribute name="stressor_id" type="guid"/>
+                                            <xs:attribute name="id" type="guid" use="required" />
                                         </xs:extension>
                                     </xs:complexContent>
                                 </xs:complexType>

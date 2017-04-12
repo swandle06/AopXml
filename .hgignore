@@ -4,3 +4,5 @@ bin
 obj
 Properties/*
 output/*
+_ReSharper.Caches
+.vs

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
@@ -157,8 +158,13 @@ namespace AopWikiExporter
                         NewLineOnAttributes = false
                     }))
                 {
+                    // Gets rid of xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                    var namespaces = new XmlSerializerNamespaces();
+                    namespaces.Add(
+                        string.Empty,
+                        typeof(data).GetTypeInfo().GetCustomAttribute<XmlTypeAttribute>()?.Namespace ?? string.Empty);
                     var rootSerializer = new XmlSerializer(data.GetType());
-                    rootSerializer.Serialize(writer, data);
+                    rootSerializer.Serialize(writer, data, namespaces);
                 }
 
                 tx.Commit();

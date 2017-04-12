@@ -1,0 +1,25 @@
+﻿<Project>
+  <!-- Project version properties (follows semantic versioning 2.0.0 rules) -->
+  <PropertyGroup>
+    <VersionPrefix>0.1.0</VersionPrefix>
+    <VersionSuffix>alpha</VersionSuffix>
+    <Company>Rosettastein</Company>
+    <Copyright>Copyright © Rosettastein 2017</Copyright>
+    <Product>AopWikiExporter</Product>
+  </PropertyGroup>
+  
+  <!-- Do not change anything below this comment -->
+  <PropertyGroup>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <DotNetCliToolReference Include="ProjectVersioning.DotNet.Cli" Version="2.1.0" />
+  </ItemGroup>
+  
+  <Target Name="GenerateVersionInfo" BeforeTargets="Build">
+    <Exec Command="dotnet project-version -s=hg -t=cs -v=$(VersionPrefix) -m=$(VersionSuffix)" />
+  </Target>
+</Project>

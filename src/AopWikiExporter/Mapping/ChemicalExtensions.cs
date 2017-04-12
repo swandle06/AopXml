@@ -41,7 +41,9 @@ namespace AopWikiExporter.Mapping
             {
                 if (synonymJoinTable.TryGetValue(mappedChemical.AopWikiId, out var synonyms))
                 {
-                    mappedChemical.Target.synonyms = synonyms.Select(t => t.Term).ToArray();
+                    mappedChemical.Target.synonyms = synonyms.Where(t => t.Term != null)
+                        .Select(t => t.Term.Trim())
+                        .ToArray();
                 }
             }
 

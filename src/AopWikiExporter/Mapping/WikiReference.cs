@@ -54,9 +54,12 @@ namespace AopWikiExporter.Mapping
             var document = new XmlDocument();
             var tagName = s_TagNamesByType.GetOrAdd(
                 reference.Target.GetType(),
-                t => t.GetTypeInfo().GetCustomAttribute<XmlRootAttribute>()?.ElementName?.Length > 0
-                    ? t.GetTypeInfo().GetCustomAttribute<XmlRootAttribute>().ElementName
-                    : t.Name);
+                t => typeof(data).GetTypeInfo()
+                         .GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                         .FirstOrDefault(p => p.PropertyType == reference.Target.GetType().MakeArrayType())
+                         ?.GetCustomAttribute<XmlElementAttribute>()
+                         ?.ElementName ?? throw new ArgumentException(
+                         $"data root element doesn't contain a property of type {reference.Target.GetType().Name}[]"));
             var element = document.CreateElement($"{tagName}-reference");
             var idAttribute = document.CreateAttribute("id");
             idAttribute.Value = reference.Target.id;

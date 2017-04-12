@@ -1,0 +1,200 @@
+AOP table:
+----------
+- <internal id>
+- id - aopwiki_id
+- title - title
+- short_name - short_name
+- corresponding_author_id - <ignored>
+- abstract - abstract
+- created_at - creation_timestamp
+- updated_at - last_modification_timestamp
+- status_id -> <ignored>
+- authors -> authors (keep as html, needs design for future structure).
+- applicability_of_the_aop -> overall_assessment/applicability
+- key_event_essentiality -> overall_assessment/key_event_essentiality_summary
+- weight_of_evidence_summary -> overall_assessment/weight_of_evidence_summary
+- quantitative_considerations -> overall_assessment/quantitative_considerations
+- optional_considerations -> potential_applications (NOTE: renamed from overall_assessment/optional_considerations)
+- references -> references
+- overall_assessment -> overall_assessment/description
+- background -> background
+- user_defined_mie -> (ignored, search for proper reference to MIE).
+- user_defined_ao -> (ignored, search for proper reference to MIE).
+- oecd_project -> (ignored)
+- oecd_status_id -> oecd_status (restricted string).
+- saaop_status_id -> saaop_status (restricted string).
+- graphical_representation_image_uid -> (ignored)
+- legacy -> (ignored).
+
+// ADDENDUM
+- molecular_initiating_event -> referencing key event by internal document id
+- (referenced events/evidence_for_chemical_initiation) -> molecular_initiating_event/evidence_supporting_chemical_initiation
+- SAME AS molecular_initiating_event will be adverse_outcome (elaboration on next line)
+- adverse_outcome -> referencing key event by internal document id
+- (referenced events/examples_using_ao) -> adverse_outcome/examples.
+ED: One thing missing ? How to determine which key events are molecular initiating for an aop an which are adverse outcome for an aop.
+
+// table: aop_relationships maps to -> key_event_relationships.
+- sequence of relationship, references relationships (the scientific word, not the db relational meaning).
+- directness: 0 = direct, 1 = indirect (YES, THE BOOLEAN IS INVERSED IN THE SQL) (recommend a better name).
+XXXX- evidence_id -> evidence (?) - bad naming
+XXXX- quantitative_understanding_id -> quantitative_understanding_value (?) - bad naming
+- row_order (implied by sequence).
+- created_at / updated_at -> (ignored).
+
+// table: aop_stressors maps to -> aop_stressors
+- sequence references aop_stressor, references stressor
+- evidence_id -> evidence
+- evidence_text -> description
+
+// Complex type: applicability contains explicit children [sex, life_stage, taxonomy].
+- sex, life_stage -> (these are evidence types and have an additional restricted string 'sex' or 'life_stage')
+- taxonomy -> (this is an evidence type and have an additional taxonomy_term_id reference).
+
+// ANSWER TO LINGERING QUESTION:
+To determine molecular initiating event, use the lowest row_order aop_relationship record related to the current aop to reach the relationship table and then get the upstream event id of the upstream event id from the same table.
+- Query:
+SELECT mie_r.upstream_event_id, r.upstream_event_id
+FROM
+    aop_relationships AS ar
+    INNER JOIN relationships AS r
+    ON ar.relationship_id = r.id
+    INNER JOIN relationships AS mie_r
+    ON mie_r.downstream_event_id = r.upstream_event_id
+WHERE aop_id = 12
+ORDER BY row_order ASC
+LIMIT 1
+--- THEORY HOLDS
+
+// ANSWER TO LINGERING QUESTION:
+To determine adverse outcome event, use the highest row_order aop_relationship record related to the current aop to reach the relationship table then get the downstream event id of the downstream event id from the same table.
+SELECT r.upstream_event_id, ao_r.downstream_event_id
+FROM
+    aop_relationships AS ar
+    INNER JOIN relationships AS r
+    ON ar.relationship_id = r.id
+    INNER JOIN relationships AS ao_r
+    ON ao_r.downstream_event_id = r.downstream_event_id
+WHERE aop_id = 121
+ORDER BY row_order DESC
+LIMIT 1
+^^^ XXXXXXX Theory doesn't hold
+
+XXX NEED TO ASK AOPWIKI PEOPLE: HOW DO THEY DETERMINE MIE AND AO from the chain and relationships.
+
+- Key events:
+-------------
+- <internal id>
+- id -> aopwiki_id
+- title -> title
+- short_name -> short_name
+- created_at -> creation_timestamp
+- updated_at -> last_modification_timestamp
+- biological_organization_id -> biological_organization_level (restricted string to superset of values in aopwiki and effectopedia)
+- how_it_works -> description
+- measured_or_detected -> measurement_methodology
+- supporting_tax_evidence -> evidence_supporting_taxonomic_applicability
+(For molecular initiating events only) - evidence_for_chemical_initiation -> (see aops).
+(For adverse outcomes only) - examples_using_ao -> (see aops).
+- references -> references.
+- definition -> (ignored).
+- organ_term_id and cell_term_id are references to biological terms.
+
+// Container DBNAME:sub_events -> biological_events
+- each <event> is a tag with 3 attributes referencing object_id, process_id, action_id (biological_object, biological_process, biological_action).
+
+// Complex type: applicability contains explicit children [sex, life_stage, taxonomy].
+- sex, life_stage -> (these are evidence types and have an additional restricted string 'sex' or 'life_stage')
+- taxonomy -> (this is an evidence type and have an additional taxonomy_term_id reference).
+
+// table: event_stressors container is event_stressors each element is event_stressor
+- references stressor
+- evidence_id -> evidence
+- evidence_text -> description
+
+- Biological terms (organ/cell/taxonomy)
+----------------------------------------
+<internal id>
+- source -> source
+- source_id -> source_id
+- synonym -> synonym
+- official_name -> name
+- created_at -> creation_timestamp
+- updated_at -> last_modification_timestamp
+(For taxonomy, term_class will be ignored).
+
+- Relationships:
+----------------
+- <internal id>
+- id -> aopwiki_id
+- upstream_event_id -> title/upstream_id
+- downstream_event_id -> title/downstream_id
+- how_it_works -> description
+- weight_of_evidence -> weight_of_evidence/value
+- biological_plausibility -> weight_of_evidence/biological_plausibility
+- empiricial_support -> weight_of_evidence/empirical_support_linkage
+- uncertainties -> weight_of_evidence/uncertainties_or_inconsistencies
+- quantitative_understanding -> quantitative_understanding/description
+- taxon_evidence -> evidence_supporting_taxonomic_applicability
+- references -> references
+- created_at -> creation_timestamp
+- updated_at -> last_modification_timestamp
+
+- AOP relationships:
+--------------------
+NOTES: evidence -> strong, weak, moderate, very strong, not specified
+NOTES: quantitative understanding -> strong, moderate, weak, very strong, not specified.
+NOTES: directness -> 1 = indirect, 0 = direct.
+- Reference to AOP
+- Reference to Relationships (from a scientific point of view, not the relational meaning of the word).
+- Created_at
+- Updated_at
+// See aops.
+
+- Stressor -> stressor
+----------------------
+name -> name
+id -> aopwiki_id
+chemical_description -> description
+characterization_of_exposure -> exposure_characterization
+created_at -> creation_timestamp
+updated_at -> last_modification_timestamp
+
+// <chemicals> -> list of <chemical_initiator with chemical_id having internal id of chemical element and user_term attributes.
+
+- biological_objects, biological_processes, biological_actions (Enum-like tables)
+----------------------------------------------------------------------------------
+source -> source
+source_id -> source_id
+term -> name
+created_at -> creation_timestamp
+updated_at -> last_modification_timestamp
+
+// FINAL TASK: vendor -> refactor away aopwiki_id.
+// FINAL TASK: C# conversion review.
+// FINAL TASK: containerize root elements.
+
+- chemical
+----------
+- dsstox_substance_id -> dsstox_substance_id
+- casrn -> casrn
+- preferred_name -> preferred_name
+- jchem_inchi_key -> jchem_inchi_key
+- indigo_inchi_key -> indigo_inchi_key
+- created_at -> creation_timestamp
+- updated_at -> last_modification_timestamp
+
+// synonyms (map from chemical_synonyms)
+- <synonym>value</synonmym>
+
+vendor-specific references:
+X- chemical
+X- biological_object
+X- biological_process
+X- biological_action
+X- stressor
+X- taxonomy
+X- key_event
+X- key_event_relationship
+X- aop
+X- vendor-specific

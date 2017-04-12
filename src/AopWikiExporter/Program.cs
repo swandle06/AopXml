@@ -17,16 +17,19 @@ namespace AopWikiExporter
                 var parser = new CommandLineParser.CommandLineParser();
                 var connectionStringArgument = new ValueArgument<string>('c', "connectionString", "MySQL connection string")
                 {
-                    Optional = false
+                    Optional = false,
+                    ValueOptional = false,
+                    Example = "Host=localhost; Database=aop_xml; User=root; Password=password"
                 };
                 var outputFileArgument = new ValueArgument<string>(
                     'o',
                     "outputFile",
-                    "Write XML to file path. If missing, will write to stdout");
-                var showUsageArgument = new SwitchArgument('h', "help", "Shows this usage message", false);
+                    "XML output path. Using .gz or .zip extension will produce a compressed output. If omitted, will write to stdout.")
+                {
+                    ValueOptional = false
+                };
                 parser.Arguments.Add(connectionStringArgument);
                 parser.Arguments.Add(outputFileArgument);
-                parser.Arguments.Add(showUsageArgument);
 
                 parser.ParseCommandLine(args);
 

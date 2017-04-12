@@ -1,8 +1,8 @@
 ﻿<Project>
   <!-- Project version properties (follows semantic versioning 2.0.0 rules) -->
   <PropertyGroup>
-    <VersionPrefix>0.1.0</VersionPrefix>
-    <VersionSuffix>alpha</VersionSuffix>
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <VersionSuffix></VersionSuffix>
     <Company>Rosettastein</Company>
     <Copyright>Copyright © Rosettastein 2017</Copyright>
     <Product>AopWikiExporter</Product>

@@ -366,7 +366,7 @@
                 </xs:element>
                 <xs:element name="key-event-relationship" minOccurs="0" maxOccurs="unbounded">
                     <xs:complexType>
-                        <xs:all>
+                        <xs:sequence>
                             <xs:element name="title">
                                 <xs:complexType>
                                     <xs:sequence>
@@ -424,7 +424,7 @@
                             <xs:element name="creation-timestamp" type="xs:dateTime" minOccurs="0" />
                             <xs:element name="last-modification-timestamp" type="xs:dateTime" minOccurs="0" />
                             <xs:element name="references" type="xs:string" minOccurs="0" />
-                        </xs:all>
+                        </xs:sequence>
                         <xs:attribute name="id" type="guid" use="required" />
                     </xs:complexType>
                 </xs:element>
@@ -504,14 +504,14 @@
                             <xs:element name="applicability" type="applicability-type" minOccurs="0" />
                             <xs:element name="overall-assessment" maxOccurs="1" minOccurs="0">
                                 <xs:complexType>
-                                    <xs:all>
+                                    <xs:sequence>
                                         <xs:element name="description" type="xs:string" minOccurs="0" />
                                         <xs:element name="applicability" type="xs:string" minOccurs="0" />
                                         <xs:element name="key-event-essentiality-summary" type="xs:string" minOccurs="0" />
                                         <xs:element name="weight-of-evidence-summary" type="xs:string" minOccurs="0" />
                                         <xs:element name="quantitative-considerations" type="xs:string" minOccurs="0" />
                                         <xs:element name="uri" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
-                                    </xs:all>
+                                    </xs:sequence>
                                 </xs:complexType>
                             </xs:element>
                             <xs:element name="potential-applications" type="xs:string" minOccurs="0" />

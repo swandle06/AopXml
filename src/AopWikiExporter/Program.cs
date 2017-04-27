@@ -65,7 +65,7 @@ namespace AopWikiExporter
                 return Console.OpenStandardOutput();
             }
 
-            var fileStream = File.OpenWrite(outputFilePath);
+            var fileStream = File.Open(outputFilePath, FileMode.Create, FileAccess.Write, FileShare.Read);
             var fileExtension = Path.GetExtension(outputFilePath);
 
             if (fileExtension == ".gz")

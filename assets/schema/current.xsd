@@ -389,7 +389,7 @@
                             <xs:element minOccurs="0" name="quality-assurance" type="qa-type" />
                             <xs:element name="description" type="xs:string" />
                             <xs:element name="temporal-concordance" type="xs:string" minOccurs="0" />
-                            <xs:element name="weight-of-evidence" maxOccurs="unbounded" minOccurs="0">
+                            <xs:element name="weight-of-evidence" minOccurs="0">
                                 <xs:complexType>
                                     <xs:sequence>
                                         <xs:element name="value" type="xs:string" />
@@ -407,7 +407,7 @@
                                     </xs:sequence>
                                 </xs:complexType>
                             </xs:element>
-                            <xs:element name="taxonomic-applicability" type="applicability-type" minOccurs="0" maxOccurs="unbounded" />
+                            <xs:element name="taxonomic-applicability" type="applicability-type" minOccurs="0" />
                             <xs:element name="evidence-supporting-taxonomic-applicability" type="xs:string" minOccurs="0" />
                             <xs:element name="source" minOccurs="0">
                                 <xs:simpleType>

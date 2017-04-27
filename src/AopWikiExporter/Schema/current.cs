@@ -3032,7 +3032,7 @@ public partial class dataAopOverallassessment {
     
     private string quantitativeconsiderationsField;
     
-    private string uriField;
+    private string[] uriField;
     
     /// <remarks/>
     public string description {
@@ -3088,7 +3088,8 @@ public partial class dataAopOverallassessment {
     }
     
     /// <remarks/>
-    public string uri {
+    [System.Xml.Serialization.XmlElementAttribute("uri")]
+    public string[] uri {
         get {
             return this.uriField;
         }

@@ -14,13 +14,15 @@ namespace AopWikiExporter
     class XmlExport
     {
         readonly string _connectionString;
+        readonly bool _excludeUnreferencedChemicals;
 
-        public XmlExport(string connectionString)
+        public XmlExport(string connectionString, bool excludeUnreferencedChemicals)
         {
             if (string.IsNullOrWhiteSpace(connectionString))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(connectionString));
 
             this._connectionString = connectionString;
+            this._excludeUnreferencedChemicals = excludeUnreferencedChemicals;
         }
 
         public void WriteToOutput(Stream output)
@@ -123,7 +125,7 @@ namespace AopWikiExporter
                     .SaaopStatuses
                     .MapToLookupTable<SaaopStatus, statusSaaopstatus>();
 
-                context
+                var aops = context
                     .Aops
                     .MapToSchema(
                         oecdStatusesByWikiId,
@@ -134,6 +136,30 @@ namespace AopWikiExporter
                         confidenceLevelsByWikiId,
                         stressorsByWikiId)
                     .AddToReferencesAndAssignToRoot(referenceLists, data);
+
+                if (this._excludeUnreferencedChemicals)
+                {
+                    // Slow but does the job for now
+                    var referencedStressorIds = new HashSet<string>(
+                        aops.SelectMany(a => a.Target.aopstressors.Select(y => y.id)));
+
+                    var referencedChemicalIds = new HashSet<string>(
+                        stressorsByWikiId
+                            .Select(s => s.Value.Target)
+                            .Where(s => referencedStressorIds.Contains(s.id))
+                            .SelectMany(y => y.chemicals.Select(c => c.chemicalid)));
+
+                    var referencedChemicals =
+                        chemicalsByWikiId.Where(x => referencedChemicalIds.Contains(x.Value.Target.id));
+
+                    referenceLists = referenceLists
+                        .Where(x => !(x.FirstOrDefault() is IWikiReference<dataChemical>))
+                        .ToList();
+
+                    referencedChemicals.Select(x => x.Value)
+                        .ToList()
+                        .AddToReferencesAndAssignToRoot(referenceLists, data);
+                }
 
                 data.vendorspecific = new dataVendorspecific
                 {

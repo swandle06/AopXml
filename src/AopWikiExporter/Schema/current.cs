@@ -2974,22 +2974,11 @@ public enum dataAopRelationshipDirectness {
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.aopkb.org/aop-xml")]
 public partial class dataAopKeyeventessentiality {
     
-    private string keyeventidField;
-    
     private confidenceleveltype essentialitylevelField;
     
     private string[] uriField;
     
-    /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("key-event-id", DataType="positiveInteger")]
-    public string keyeventid {
-        get {
-            return this.keyeventidField;
-        }
-        set {
-            this.keyeventidField = value;
-        }
-    }
+    private string keyeventidField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("essentiality-level")]
@@ -3010,6 +2999,17 @@ public partial class dataAopKeyeventessentiality {
         }
         set {
             this.uriField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute("key-event-id")]
+    public string keyeventid {
+        get {
+            return this.keyeventidField;
+        }
+        set {
+            this.keyeventidField = value;
         }
     }
 }

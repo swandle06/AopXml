@@ -497,8 +497,8 @@
                                     <xs:sequence>
                                         <xs:element name="essentiality-level" type="confidence-level-type" />
                                         <xs:element name="uri" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
-                                        <xs:attribute name="key-event-id" type="guid" use="required" />
                                     </xs:sequence>
+                                    <xs:attribute name="key-event-id" type="guid" use="required" />
                                 </xs:complexType>
                             </xs:element>
                             <xs:element name="applicability" type="applicability-type" minOccurs="0" />

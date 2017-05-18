@@ -272,7 +272,7 @@
                                         <xs:element name="chemical-initiator" minOccurs="1" maxOccurs="unbounded">
                                             <xs:complexType>
                                                 <xs:attribute name="chemical-id" type="guid" />
-                                                <xs:attribute name="user-term" type="string" />
+                                                <xs:attribute name="user-term" type="xs:string" />
                                             </xs:complexType>
                                         </xs:element>
                                     </xs:sequence>

@@ -5,13 +5,12 @@
             <xs:documentation xml:lang="en">The representation of a GUID, generally the id of an element.</xs:documentation>
         </xs:annotation>
         <xs:restriction base="xs:string">
-            <xs:pattern value="\{[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}\}" />
+            <xs:pattern value="[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}" />
         </xs:restriction>
     </xs:simpleType>
     <xs:complexType name="evidence-type">
         <xs:sequence>
             <xs:element name="evidence" type="confidence-level-type" />
-            <xs:element name="description" type="xs:string" minOccurs="0" />
             <xs:element name="uri" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
         </xs:sequence>
     </xs:complexType>
@@ -101,7 +100,6 @@
             <xs:element name="time-to-manifestation" type="xs:string" maxOccurs="unbounded" minOccurs="0" />
             <xs:element name="time-to-manifestation-range" type="xs:string" maxOccurs="unbounded" minOccurs="0" />
             <xs:element name="generation" type="xs:string" maxOccurs="unbounded" minOccurs="0" />
-            <xs:element name="other" type="xs:string" maxOccurs="unbounded" minOccurs="0" />
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="substance-info">
@@ -136,11 +134,11 @@
             <xs:element name="wiki-status">
                 <xs:simpleType>
                     <xs:restriction base="xs:string">
-                        <xs:enumeration value="Open for Citation" />
-                        <xs:enumeration value="Open for Adoption" />
-                        <xs:enumeration value="Open for Comment" />
-                        <xs:enumeration value="Not under Development" />
-                        <xs:enumeration value="Under Development" />
+                        <xs:enumeration value="Open for citation &amp; comment" />
+                        <xs:enumeration value="Open for comment. Do not cite" />
+                        <xs:enumeration value="Open for adoption" />
+                        <xs:enumeration value="Not under active development" />
+                        <xs:enumeration value="Under development: Not open for comment. Do not cite" />
                     </xs:restriction>
                 </xs:simpleType>
             </xs:element>
@@ -184,7 +182,6 @@
     </xs:simpleType>
     <xs:simpleType name="confidence-level-type">
         <xs:restriction base="xs:string">
-            <xs:enumeration value="Very strong" />
             <xs:enumeration value="Strong" />
             <xs:enumeration value="Moderate" />
             <xs:enumeration value="Weak" />
@@ -207,14 +204,14 @@
                 <xs:element name="chemical" minOccurs="0" maxOccurs="unbounded">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="inchi" type="xs:string" />
+                            <xs:element name="inchi" type="xs:string" minOccurs="0" />
                             <xs:element name="casrn" type="xs:string" minOccurs="0" />
                             <xs:element name="jchem-inchi-key" type="xs:string" minOccurs="0" />
                             <xs:element name="indigo-inchi-key" type="xs:string" minOccurs="0" />
                             <xs:element name="iupac-name" type="xs:string" minOccurs="0" />
                             <xs:element name="smiles" type="xs:string" minOccurs="0" />
-                            <xs:element name="preferred-name" type="xs:string" minOccurs="0" />
-                            <xs:element name="synonyms" minOccurs="1">
+                            <xs:element name="preferred-name" type="xs:string" />
+                            <xs:element name="synonyms" minOccurs="0">
                                 <xs:complexType>
                                     <xs:sequence>
                                         <xs:element name="synonym" minOccurs="1" maxOccurs="unbounded" type="xs:string" />
@@ -224,8 +221,8 @@
                             <xs:element name="formula" type="xs:string" minOccurs="0" />
                             <xs:element name="structural-diagram-2d" type="xs:hexBinary" minOccurs="0" />
                             <xs:element name="dsstox-id" type="xs:string" minOccurs="0" />
-                            <xs:element minOccurs="0" name="creation-timestamp" type="xs:dateTime" />
-                            <xs:element minOccurs="0" name="last-modification-timestamp" type="xs:dateTime" />
+                            <xs:element name="creation-timestamp" type="xs:dateTime" minOccurs="0"  />
+                            <xs:element name="last-modification-timestamp" type="xs:dateTime" minOccurs="0" />
                         </xs:sequence>
                         <xs:attribute name="id" type="guid" use="required" />
                     </xs:complexType>
@@ -266,17 +263,16 @@
                 <xs:element name="stressor" minOccurs="0" maxOccurs="unbounded">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="title" type="xs:string" />
-                            <xs:element minOccurs="0" name="quality-assurance" type="qa-type" />
                             <xs:element name="name" type="xs:string" />
+                            <xs:element minOccurs="0" name="quality-assurance" type="qa-type" />
                             <xs:element name="description" type="xs:string" />
-                            <xs:element name="chemicals" minOccurs="1">
+                            <xs:element name="chemicals" minOccurs="0">
                                 <xs:complexType>
                                     <xs:sequence>
-                                        <xs:element name="chemical-initiator" maxOccurs="unbounded">
+                                        <xs:element name="chemical-initiator" minOccurs="1" maxOccurs="unbounded">
                                             <xs:complexType>
                                                 <xs:attribute name="chemical-id" type="guid" />
-                                                <xs:attribute name="user-term" type="guid" />
+                                                <xs:attribute name="user-term" type="string" />
                                             </xs:complexType>
                                         </xs:element>
                                     </xs:sequence>
@@ -314,9 +310,9 @@
                             <xs:element name="measurement-methodology" type="xs:string" minOccurs="0" />
                             <xs:element name="evidence-supporting-taxonomic-applicability" type="xs:string" minOccurs="0" />
                             <xs:element name="references" type="xs:string" minOccurs="0" />
-                            <xs:element minOccurs="0" name="organ-term" type="biological-term-type" />
-                            <xs:element minOccurs="0" name="cell-term" type="biological-term-type" />
-                            <xs:element minOccurs="0" name="quality-assurance" type="qa-type" />
+                            <xs:element name="organ-term" type="biological-term-type" minOccurs="0" />
+                            <xs:element name="cell-term" type="biological-term-type" minOccurs="0" />
+                            <xs:element name="quality-assurance" type="qa-type" minOccurs="0" />
                             <xs:element name="applicability" type="applicability-type" minOccurs="0" />
                             <xs:element name="source" minOccurs="0">
                                 <xs:simpleType>
@@ -345,10 +341,10 @@
                                     </xs:sequence>
                                 </xs:complexType>
                             </xs:element>
-                            <xs:element name="key-event-stressors">
+                            <xs:element name="key-event-stressors" minOccurs="0">
                                 <xs:complexType>
                                     <xs:sequence>
-                                        <xs:element name="key-event-stressor" maxOccurs="unbounded">
+                                        <xs:element name="key-event-stressor" minOccurs="1" maxOccurs="unbounded">
                                             <xs:complexType>
                                                 <xs:complexContent>
                                                     <xs:extension base="evidence-type">
@@ -447,7 +443,7 @@
                                     <xs:attribute name="key-event-id" />
                                 </xs:complexType>
                             </xs:element>
-                            <xs:element name="adverse-outcome" maxOccurs="unbounded">
+                            <xs:element name="adverse-outcome" minOccurs="0" maxOccurs="unbounded">
                                 <xs:complexType>
                                     <xs:sequence>
                                         <xs:element name="examples" type="xs:string" minOccurs="0" />
@@ -492,13 +488,19 @@
                                 </xs:complexType>
                             </xs:element>
                             <xs:element name="essentiality-support" minOccurs="0" maxOccurs="unbounded" />
-                            <xs:element name="key-event-essentiality" maxOccurs="unbounded">
+                            <xs:element name="key-event-essentialities" minOccurs="0">
                                 <xs:complexType>
                                     <xs:sequence>
-                                        <xs:element name="essentiality-level" type="confidence-level-type" />
-                                        <xs:element name="uri" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+                                        <xs:element name="essentiality" minOccurs="1" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="essentiality-level" type="confidence-level-type" />
+                                                    <xs:element name="uri" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+                                                </xs:sequence>
+                                                <xs:attribute name="key-event-id" type="guid" use="required" />
+                                            </xs:complexType>
+                                        </xs:element>
                                     </xs:sequence>
-                                    <xs:attribute name="key-event-id" type="guid" use="required" />
                                 </xs:complexType>
                             </xs:element>
                             <xs:element name="applicability" type="applicability-type" minOccurs="0" />
@@ -529,10 +531,10 @@
                             <xs:element name="source-internal-id" type="xs:string" minOccurs="0" />
                             <xs:element name="uri" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
                             <xs:element name="references" type="xs:string" minOccurs="0" />
-                            <xs:element name="aop-stressors">
+                            <xs:element name="aop-stressors" minOccurs="0">
                                 <xs:complexType>
                                     <xs:sequence>
-                                        <xs:element name="aop-stressor" maxOccurs="unbounded">
+                                        <xs:element name="aop-stressor" minOccurs="1" maxOccurs="unbounded">
                                             <xs:complexType>
                                                 <xs:complexContent>
                                                     <xs:extension base="evidence-type">

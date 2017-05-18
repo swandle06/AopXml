@@ -9,15 +9,20 @@ namespace AopWikiExporter.Mapping
     {
         public static IReadOnlyCollection<IWikiReference<dataAop>> MapToSchema(
             this IQueryable<Aop> aops,
+            IReadOnlyDictionary<int, statusWikistatus> wikiStatusesByWikiId,
             IReadOnlyDictionary<int, statusOecdstatus> oecdStatusesByWikiId,
             IReadOnlyDictionary<int, statusSaaopstatus> saaopStatusesByWikiId,
             IQueryable<AopEvent> aopEvents,
             IReadOnlyDictionary<int, IWikiReference<dataKeyevent>> keyEventsByWikiId,
             IReadOnlyDictionary<int, IWikiReference<dataKeyeventrelationship>> keyEventRelationshipsByWikiId,
             IReadOnlyDictionary<int, confidenceleveltype> confidenceLevelsByWikiId,
-            IReadOnlyDictionary<int, IWikiReference<dataStressor>> stressorsByWikiId)
+            IReadOnlyDictionary<int, IWikiReference<dataStressor>> stressorsByWikiId,
+            IReadOnlyDictionary<int, applicabilitytypeSexSex> sexesByWikiId,
+            IReadOnlyDictionary<int, applicabilitytypeLifestageLifestage> lifeStagesByWikiId,
+            TaxonomyMapper taxonomies)
         {
             if (aops == null) throw new ArgumentNullException(nameof(aops));
+            if (wikiStatusesByWikiId == null) throw new ArgumentNullException(nameof(wikiStatusesByWikiId));
             if (oecdStatusesByWikiId == null) throw new ArgumentNullException(nameof(oecdStatusesByWikiId));
             if (saaopStatusesByWikiId == null) throw new ArgumentNullException(nameof(saaopStatusesByWikiId));
             if (aopEvents == null) throw new ArgumentNullException(nameof(aopEvents));
@@ -26,6 +31,9 @@ namespace AopWikiExporter.Mapping
                 throw new ArgumentNullException(nameof(keyEventRelationshipsByWikiId));
             if (confidenceLevelsByWikiId == null) throw new ArgumentNullException(nameof(confidenceLevelsByWikiId));
             if (stressorsByWikiId == null) throw new ArgumentNullException(nameof(stressorsByWikiId));
+            if (sexesByWikiId == null) throw new ArgumentNullException(nameof(sexesByWikiId));
+            if (lifeStagesByWikiId == null) throw new ArgumentNullException(nameof(lifeStagesByWikiId));
+            if (taxonomies == null) throw new ArgumentNullException(nameof(taxonomies));
 
             return aops.Select(
                     x => new WikiReference<dataAop>
@@ -52,6 +60,10 @@ namespace AopWikiExporter.Mapping
 
                             status = new status
                             {
+                                wikistatus = x.StatusId.HasValue
+                                    ? wikiStatusesByWikiId[x.StatusId.Value]
+                                    : statusWikistatus.UnderDevelopment,
+
                                 oecdstatus = x.OecdStatusId.HasValue
                                     ? oecdStatusesByWikiId[x.OecdStatusId.Value]
                                     : statusOecdstatus.UnderDevelopment,
@@ -59,6 +71,46 @@ namespace AopWikiExporter.Mapping
                                 saaopstatus = x.SaaopStatusId.HasValue
                                     ? saaopStatusesByWikiId[x.SaaopStatusId.Value]
                                     : statusSaaopstatus.UnderDevelopment
+                            },
+
+                            applicability = new applicabilitytype
+                            {
+                                sex = x.AopSexes
+                                    .Where(s => s.SexTermId.HasValue)
+                                    .Select(
+                                        s => new applicabilitytypeSex
+                                        {
+                                            sex = sexesByWikiId[s.SexTermId.Value],
+                                            evidence = s.EvidenceId.HasValue
+                                                ? confidenceLevelsByWikiId[s.EvidenceId.Value]
+                                                : confidenceleveltype.notspecified
+                                        })
+                                    .ToArray(),
+
+                                lifestage = x.AopLifeStages
+                                    .Where(l => l.LifeStageTermId.HasValue)
+                                    .Select(
+                                        l => new applicabilitytypeLifestage
+                                        {
+                                            lifestage = lifeStagesByWikiId[l.LifeStageTermId.Value],
+                                            evidence = l.EvidenceId.HasValue
+                                                ? confidenceLevelsByWikiId[l.EvidenceId.Value]
+                                                : confidenceleveltype.notspecified
+                                        })
+                                    .ToArray(),
+
+                                taxonomy = x.AopTaxons
+                                    .Where(t => t.TaxonTermId.HasValue)
+                                    .Select(
+                                        t => new applicabilitytypeTaxonomy
+                                        {
+                                            taxonomyid =
+                                                taxonomies.GetByAopWikiId(t.TaxonTermId.Value).Target.id,
+                                            evidence = t.EvidenceId.HasValue
+                                                ? confidenceLevelsByWikiId[t.EvidenceId.Value]
+                                                : confidenceleveltype.notspecified
+                                        })
+                                    .ToArray()
                             },
 
                             molecularinitiatingevent = aopEvents
@@ -108,6 +160,16 @@ namespace AopWikiExporter.Mapping
                                                 : confidenceleveltype.notspecified
                                     })
                                 .ToArray(),
+
+                            keyeventessentiality = aopEvents
+                                .Where(e => e.AopId == x.Id && e.EventId.HasValue)
+                                .Select(s => new dataAopKeyeventessentiality
+                                {
+                                    keyeventid = keyEventsByWikiId[s.EventId.Value].Target.id,
+                                    essentialitylevel = s.EssentialityId.HasValue
+                                        ? confidenceLevelsByWikiId[s.EssentialityId.Value]
+                                        : confidenceleveltype.notspecified,
+                                }).ToArray(),
 
                             aopstressors = x.AopStressors
                                 .Where(s => s.StressorId.HasValue)

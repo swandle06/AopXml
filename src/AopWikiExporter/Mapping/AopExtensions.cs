@@ -62,7 +62,7 @@ namespace AopWikiExporter.Mapping
                             {
                                 wikistatus = x.StatusId.HasValue
                                     ? wikiStatusesByWikiId[x.StatusId.Value]
-                                    : statusWikistatus.UnderDevelopment,
+                                    : statusWikistatus.UnderdevelopmentNotopenforcommentDonotcite,
 
                                 oecdstatus = x.OecdStatusId.HasValue
                                     ? oecdStatusesByWikiId[x.OecdStatusId.Value]
@@ -161,9 +161,9 @@ namespace AopWikiExporter.Mapping
                                     })
                                 .ToArray(),
 
-                            keyeventessentiality = aopEvents
+                            keyeventessentialities = aopEvents
                                 .Where(e => e.AopId == x.Id && e.EventId.HasValue)
-                                .Select(s => new dataAopKeyeventessentiality
+                                .Select(s => new dataAopEssentiality
                                 {
                                     keyeventid = keyEventsByWikiId[s.EventId.Value].Target.id,
                                     essentialitylevel = s.EssentialityId.HasValue
@@ -179,8 +179,7 @@ namespace AopWikiExporter.Mapping
                                         id = stressorsByWikiId[s.StressorId.Value].Target.id,
                                         evidence = s.EvidenceId.HasValue
                                             ? confidenceLevelsByWikiId[s.EvidenceId.Value]
-                                            : confidenceleveltype.notspecified,
-                                        description = s.EvidenceText
+                                            : confidenceleveltype.notspecified
                                     })
                                 .ToArray(),
 

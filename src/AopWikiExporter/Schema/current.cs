@@ -423,24 +423,24 @@ public partial class status {
 public enum statusWikistatus {
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlEnumAttribute("Open for Citation")]
-    OpenforCitation,
+    [System.Xml.Serialization.XmlEnumAttribute("Open for citation & comment")]
+    Openforcitationcomment,
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlEnumAttribute("Open for Adoption")]
-    OpenforAdoption,
+    [System.Xml.Serialization.XmlEnumAttribute("Open for comment. Do not cite")]
+    OpenforcommentDonotcite,
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlEnumAttribute("Open for Comment")]
-    OpenforComment,
+    [System.Xml.Serialization.XmlEnumAttribute("Open for adoption")]
+    Openforadoption,
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlEnumAttribute("Not under Development")]
-    NotunderDevelopment,
+    [System.Xml.Serialization.XmlEnumAttribute("Not under active development")]
+    Notunderactivedevelopment,
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlEnumAttribute("Under Development")]
-    UnderDevelopment,
+    [System.Xml.Serialization.XmlEnumAttribute("Under development: Not open for comment. Do not cite")]
+    UnderdevelopmentNotopenforcommentDonotcite,
 }
 
 /// <remarks/>
@@ -498,8 +498,6 @@ public partial class evidencetype {
     
     private confidenceleveltype evidenceField;
     
-    private string descriptionField;
-    
     private string[] uriField;
     
     /// <remarks/>
@@ -509,16 +507,6 @@ public partial class evidencetype {
         }
         set {
             this.evidenceField = value;
-        }
-    }
-    
-    /// <remarks/>
-    public string description {
-        get {
-            return this.descriptionField;
-        }
-        set {
-            this.descriptionField = value;
         }
     }
     
@@ -539,10 +527,6 @@ public partial class evidencetype {
 [System.SerializableAttribute()]
 [System.Xml.Serialization.XmlTypeAttribute(TypeName="confidence-level-type", Namespace="http://www.aopkb.org/aop-xml")]
 public enum confidenceleveltype {
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlEnumAttribute("Very strong")]
-    Verystrong,
     
     /// <remarks/>
     Strong,
@@ -581,8 +565,6 @@ public partial class applicabilitytype {
     private string[] timetomanifestationrangeField;
     
     private string[] generationField;
-    
-    private string[] otherField;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("sex")]
@@ -671,17 +653,6 @@ public partial class applicabilitytype {
             this.generationField = value;
         }
     }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("other")]
-    public string[] other {
-        get {
-            return this.otherField;
-        }
-        set {
-            this.otherField = value;
-        }
-    }
 }
 
 /// <remarks/>
@@ -694,8 +665,6 @@ public partial class applicabilitytypeSex : evidencetype {
     
     private applicabilitytypeSexSex sexField;
     
-    private bool sexFieldSpecified;
-    
     /// <remarks/>
     public applicabilitytypeSexSex sex {
         get {
@@ -703,17 +672,6 @@ public partial class applicabilitytypeSex : evidencetype {
         }
         set {
             this.sexField = value;
-        }
-    }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlIgnoreAttribute()]
-    public bool sexSpecified {
-        get {
-            return this.sexFieldSpecified;
-        }
-        set {
-            this.sexFieldSpecified = value;
         }
     }
 }
@@ -757,8 +715,6 @@ public partial class applicabilitytypeLifestage : evidencetype {
     
     private applicabilitytypeLifestageLifestage lifestageField;
     
-    private bool lifestageFieldSpecified;
-    
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("life-stage")]
     public applicabilitytypeLifestageLifestage lifestage {
@@ -767,17 +723,6 @@ public partial class applicabilitytypeLifestage : evidencetype {
         }
         set {
             this.lifestageField = value;
-        }
-    }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlIgnoreAttribute()]
-    public bool lifestageSpecified {
-        get {
-            return this.lifestageFieldSpecified;
-        }
-        set {
-            this.lifestageFieldSpecified = value;
         }
     }
 }
@@ -1381,11 +1326,9 @@ public partial class dataBiologicalaction : biologicaltermtype {
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.aopkb.org/aop-xml")]
 public partial class dataStressor {
     
-    private string titleField;
+    private string nameField;
     
     private qatype qualityassuranceField;
-    
-    private string nameField;
     
     private string descriptionField;
     
@@ -1412,12 +1355,12 @@ public partial class dataStressor {
     private string idField;
     
     /// <remarks/>
-    public string title {
+    public string name {
         get {
-            return this.titleField;
+            return this.nameField;
         }
         set {
-            this.titleField = value;
+            this.nameField = value;
         }
     }
     
@@ -1429,16 +1372,6 @@ public partial class dataStressor {
         }
         set {
             this.qualityassuranceField = value;
-        }
-    }
-    
-    /// <remarks/>
-    public string name {
-        get {
-            return this.nameField;
-        }
-        set {
-            this.nameField = value;
         }
     }
     
@@ -2495,7 +2428,7 @@ public partial class dataAop {
     
     private object[] essentialitysupportField;
     
-    private dataAopKeyeventessentiality[] keyeventessentialityField;
+    private dataAopEssentiality[] keyeventessentialitiesField;
     
     private applicabilitytype applicabilityField;
     
@@ -2646,13 +2579,14 @@ public partial class dataAop {
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("key-event-essentiality")]
-    public dataAopKeyeventessentiality[] keyeventessentiality {
+    [System.Xml.Serialization.XmlArrayAttribute("key-event-essentialities")]
+    [System.Xml.Serialization.XmlArrayItemAttribute("essentiality", IsNullable=false)]
+    public dataAopEssentiality[] keyeventessentialities {
         get {
-            return this.keyeventessentialityField;
+            return this.keyeventessentialitiesField;
         }
         set {
-            this.keyeventessentialityField = value;
+            this.keyeventessentialitiesField = value;
         }
     }
     
@@ -2972,7 +2906,7 @@ public enum dataAopRelationshipDirectness {
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.aopkb.org/aop-xml")]
-public partial class dataAopKeyeventessentiality {
+public partial class dataAopEssentiality {
     
     private confidenceleveltype essentialitylevelField;
     

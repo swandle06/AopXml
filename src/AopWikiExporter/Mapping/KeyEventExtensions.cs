@@ -117,11 +117,7 @@ namespace AopWikiExporter.Mapping
                                 .Select(
                                     s => new dataKeyeventKeyeventstressor
                                     {
-                                        id = stressorsByWikiId[s.StressorId.Value].Target.id,
-                                        //evidence = s.EvidenceId.HasValue
-                                        //    ? confidenceLevelsByWikiId[s.EvidenceId.Value]
-                                        //    : confidenceleveltype.notspecified,
-                                        description = s.EvidenceText
+                                        id = stressorsByWikiId[s.StressorId.Value].Target.id
                                     })
                                 .ToArray(),
 

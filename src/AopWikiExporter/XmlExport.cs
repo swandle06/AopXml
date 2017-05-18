@@ -117,6 +117,10 @@ namespace AopWikiExporter
                     .AddToReferencesAndAssignToRoot(referenceLists, data)
                     .ToDictionary(x => x.AopWikiId, x => x);
 
+                var wikiStatusesByWikiId = context
+                    .Statuses
+                    .MapToLookupTable<Status, statusWikistatus>();
+
                 var oecdStatusesByWikiId = context
                     .OecdStatuses
                     .MapToLookupTable<OecdStatus, statusOecdstatus>();
@@ -128,13 +132,17 @@ namespace AopWikiExporter
                 var aops = context
                     .Aops
                     .MapToSchema(
+                        wikiStatusesByWikiId,
                         oecdStatusesByWikiId,
                         saaopStatusesByWikiId,
                         context.AopEvents,
                         keyEventByWikiId,
                         keyEventRelationshipsByWikiId,
                         confidenceLevelsByWikiId,
-                        stressorsByWikiId)
+                        stressorsByWikiId,
+                        sexesByWikiId,
+                        lifeStagesByWikiId,
+                        taxonomyMapper)
                     .AddToReferencesAndAssignToRoot(referenceLists, data);
 
                 if (this._excludeUnreferencedChemicals)

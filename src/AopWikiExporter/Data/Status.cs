@@ -10,6 +10,6 @@ namespace AopWikiExporter.Data
         public string Name { get; set; }
         public DateTime UpdatedAt { get; set; }
 
-        public string Term => this.Description;
+        public string Term => this.Name;
     }
 }

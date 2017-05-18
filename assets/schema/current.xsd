@@ -21,7 +21,7 @@
                     <xs:complexContent>
                         <xs:extension base="evidence-type">
                             <xs:sequence>
-                                <xs:element name="sex" minOccurs="0">
+                                <xs:element name="sex">
                                     <xs:simpleType>
                                         <xs:restriction base="xs:string">
                                             <xs:enumeration value="Male" />
@@ -44,7 +44,7 @@
                     <xs:complexContent>
                         <xs:extension base="evidence-type">
                             <xs:sequence>
-                                <xs:element name="life-stage" minOccurs="0">
+                                <xs:element name="life-stage">
                                     <xs:simpleType>
                                         <xs:restriction base="xs:string">
                                             <xs:enumeration value="Birth to &lt; 1 month" />

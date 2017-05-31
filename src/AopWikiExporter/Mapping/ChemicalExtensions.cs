@@ -25,9 +25,7 @@ namespace AopWikiExporter.Mapping
                             dsstoxid = x.DsstoxSubstanceId != null ? x.DsstoxSubstanceId.Trim() : null,
                             jcheminchikey = x.JchemInchiKey != null ? x.JchemInchiKey.Trim() : null,
                             indigoinchikey = x.IndigoInchiKey != null ? x.IndigoInchiKey.Trim() : null,
-                            preferredname = x.PreferredName != null ? x.PreferredName.Trim() : null,
-                            creationtimestamp = x.CreatedAt,
-                            lastmodificationtimestamp = x.UpdatedAt
+                            preferredname = x.PreferredName != null ? x.PreferredName.Trim() : null
                         }
                     })
                 .ToList();

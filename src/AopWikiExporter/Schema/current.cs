@@ -185,14 +185,6 @@ public partial class dataChemical {
     
     private string dsstoxidField;
     
-    private System.DateTime creationtimestampField;
-    
-    private bool creationtimestampFieldSpecified;
-    
-    private System.DateTime lastmodificationtimestampField;
-    
-    private bool lastmodificationtimestampFieldSpecified;
-    
     private string idField;
     
     /// <remarks/>
@@ -309,50 +301,6 @@ public partial class dataChemical {
         }
         set {
             this.dsstoxidField = value;
-        }
-    }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("creation-timestamp")]
-    public System.DateTime creationtimestamp {
-        get {
-            return this.creationtimestampField;
-        }
-        set {
-            this.creationtimestampField = value;
-        }
-    }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlIgnoreAttribute()]
-    public bool creationtimestampSpecified {
-        get {
-            return this.creationtimestampFieldSpecified;
-        }
-        set {
-            this.creationtimestampFieldSpecified = value;
-        }
-    }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("last-modification-timestamp")]
-    public System.DateTime lastmodificationtimestamp {
-        get {
-            return this.lastmodificationtimestampField;
-        }
-        set {
-            this.lastmodificationtimestampField = value;
-        }
-    }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlIgnoreAttribute()]
-    public bool lastmodificationtimestampSpecified {
-        get {
-            return this.lastmodificationtimestampFieldSpecified;
-        }
-        set {
-            this.lastmodificationtimestampFieldSpecified = value;
         }
     }
     
@@ -1088,14 +1036,6 @@ public partial class biologicaltermtype {
     
     private string synonymField;
     
-    private System.DateTime creationtimestampField;
-    
-    private bool creationtimestampFieldSpecified;
-    
-    private System.DateTime lastmodificationtimestampField;
-    
-    private bool lastmodificationtimestampFieldSpecified;
-    
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("source-id")]
     public string sourceid {
@@ -1134,50 +1074,6 @@ public partial class biologicaltermtype {
         }
         set {
             this.synonymField = value;
-        }
-    }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("creation-timestamp")]
-    public System.DateTime creationtimestamp {
-        get {
-            return this.creationtimestampField;
-        }
-        set {
-            this.creationtimestampField = value;
-        }
-    }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlIgnoreAttribute()]
-    public bool creationtimestampSpecified {
-        get {
-            return this.creationtimestampFieldSpecified;
-        }
-        set {
-            this.creationtimestampFieldSpecified = value;
-        }
-    }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("last-modification-timestamp")]
-    public System.DateTime lastmodificationtimestamp {
-        get {
-            return this.lastmodificationtimestampField;
-        }
-        set {
-            this.lastmodificationtimestampField = value;
-        }
-    }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlIgnoreAttribute()]
-    public bool lastmodificationtimestampSpecified {
-        get {
-            return this.lastmodificationtimestampFieldSpecified;
-        }
-        set {
-            this.lastmodificationtimestampFieldSpecified = value;
         }
     }
 }
@@ -1576,14 +1472,6 @@ public partial class dataKeyevent {
     
     private string shortnameField;
     
-    private System.DateTime creationtimestampField;
-    
-    private bool creationtimestampFieldSpecified;
-    
-    private System.DateTime lastmodificationtimestampField;
-    
-    private bool lastmodificationtimestampFieldSpecified;
-    
     private biologicalorganizationleveltype biologicalorganizationlevelField;
     
     private bool biologicalorganizationlevelFieldSpecified;
@@ -1594,15 +1482,19 @@ public partial class dataKeyevent {
     
     private string evidencesupportingtaxonomicapplicabilityField;
     
-    private string referencesField;
-    
     private biologicaltermtype organtermField;
     
     private biologicaltermtype celltermField;
     
-    private qatype qualityassuranceField;
-    
     private applicabilitytype applicabilityField;
+    
+    private string associatedtestsField;
+    
+    private dataKeyeventBiologicalevent[] biologicaleventsField;
+    
+    private dataKeyeventKeyeventstressor[] keyeventstressorsField;
+    
+    private string referencesField;
     
     private dataKeyeventSource sourceField;
     
@@ -1612,11 +1504,15 @@ public partial class dataKeyevent {
     
     private string uriField;
     
-    private string associatedtestsField;
+    private qatype qualityassuranceField;
     
-    private dataKeyeventBiologicalevent[] biologicaleventsField;
+    private System.DateTime creationtimestampField;
     
-    private dataKeyeventKeyeventstressor[] keyeventstressorsField;
+    private bool creationtimestampFieldSpecified;
+    
+    private System.DateTime lastmodificationtimestampField;
+    
+    private bool lastmodificationtimestampFieldSpecified;
     
     private string idField;
     
@@ -1638,50 +1534,6 @@ public partial class dataKeyevent {
         }
         set {
             this.shortnameField = value;
-        }
-    }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("creation-timestamp")]
-    public System.DateTime creationtimestamp {
-        get {
-            return this.creationtimestampField;
-        }
-        set {
-            this.creationtimestampField = value;
-        }
-    }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlIgnoreAttribute()]
-    public bool creationtimestampSpecified {
-        get {
-            return this.creationtimestampFieldSpecified;
-        }
-        set {
-            this.creationtimestampFieldSpecified = value;
-        }
-    }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("last-modification-timestamp")]
-    public System.DateTime lastmodificationtimestamp {
-        get {
-            return this.lastmodificationtimestampField;
-        }
-        set {
-            this.lastmodificationtimestampField = value;
-        }
-    }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlIgnoreAttribute()]
-    public bool lastmodificationtimestampSpecified {
-        get {
-            return this.lastmodificationtimestampFieldSpecified;
-        }
-        set {
-            this.lastmodificationtimestampFieldSpecified = value;
         }
     }
     
@@ -1740,16 +1592,6 @@ public partial class dataKeyevent {
     }
     
     /// <remarks/>
-    public string references {
-        get {
-            return this.referencesField;
-        }
-        set {
-            this.referencesField = value;
-        }
-    }
-    
-    /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("organ-term")]
     public biologicaltermtype organterm {
         get {
@@ -1772,23 +1614,57 @@ public partial class dataKeyevent {
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("quality-assurance")]
-    public qatype qualityassurance {
-        get {
-            return this.qualityassuranceField;
-        }
-        set {
-            this.qualityassuranceField = value;
-        }
-    }
-    
-    /// <remarks/>
     public applicabilitytype applicability {
         get {
             return this.applicabilityField;
         }
         set {
             this.applicabilityField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute("associated-tests")]
+    public string associatedtests {
+        get {
+            return this.associatedtestsField;
+        }
+        set {
+            this.associatedtestsField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlArrayAttribute("biological-events")]
+    [System.Xml.Serialization.XmlArrayItemAttribute("biological-event", IsNullable=false)]
+    public dataKeyeventBiologicalevent[] biologicalevents {
+        get {
+            return this.biologicaleventsField;
+        }
+        set {
+            this.biologicaleventsField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlArrayAttribute("key-event-stressors")]
+    [System.Xml.Serialization.XmlArrayItemAttribute("key-event-stressor", IsNullable=false)]
+    public dataKeyeventKeyeventstressor[] keyeventstressors {
+        get {
+            return this.keyeventstressorsField;
+        }
+        set {
+            this.keyeventstressorsField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public string references {
+        get {
+            return this.referencesField;
+        }
+        set {
+            this.referencesField = value;
         }
     }
     
@@ -1835,37 +1711,57 @@ public partial class dataKeyevent {
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("associated-tests")]
-    public string associatedtests {
+    [System.Xml.Serialization.XmlElementAttribute("quality-assurance")]
+    public qatype qualityassurance {
         get {
-            return this.associatedtestsField;
+            return this.qualityassuranceField;
         }
         set {
-            this.associatedtestsField = value;
+            this.qualityassuranceField = value;
         }
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlArrayAttribute("biological-events")]
-    [System.Xml.Serialization.XmlArrayItemAttribute("biological-event", IsNullable=false)]
-    public dataKeyeventBiologicalevent[] biologicalevents {
+    [System.Xml.Serialization.XmlElementAttribute("creation-timestamp")]
+    public System.DateTime creationtimestamp {
         get {
-            return this.biologicaleventsField;
+            return this.creationtimestampField;
         }
         set {
-            this.biologicaleventsField = value;
+            this.creationtimestampField = value;
         }
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlArrayAttribute("key-event-stressors")]
-    [System.Xml.Serialization.XmlArrayItemAttribute("key-event-stressor", IsNullable=false)]
-    public dataKeyeventKeyeventstressor[] keyeventstressors {
+    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    public bool creationtimestampSpecified {
         get {
-            return this.keyeventstressorsField;
+            return this.creationtimestampFieldSpecified;
         }
         set {
-            this.keyeventstressorsField = value;
+            this.creationtimestampFieldSpecified = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute("last-modification-timestamp")]
+    public System.DateTime lastmodificationtimestamp {
+        get {
+            return this.lastmodificationtimestampField;
+        }
+        set {
+            this.lastmodificationtimestampField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    public bool lastmodificationtimestampSpecified {
+        get {
+            return this.lastmodificationtimestampFieldSpecified;
+        }
+        set {
+            this.lastmodificationtimestampFieldSpecified = value;
         }
     }
     
@@ -1879,30 +1775,6 @@ public partial class dataKeyevent {
             this.idField = value;
         }
     }
-}
-
-/// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
-[System.SerializableAttribute()]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.aopkb.org/aop-xml")]
-public enum dataKeyeventSource {
-    
-    /// <remarks/>
-    AOPWiki,
-    
-    /// <remarks/>
-    Effectopedia,
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlEnumAttribute("Intermediate Effects DB")]
-    IntermediateEffectsDB,
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlEnumAttribute("AOP Xplorer")]
-    AOPXplorer,
-    
-    /// <remarks/>
-    Other,
 }
 
 /// <remarks/>
@@ -1978,14 +1850,36 @@ public partial class dataKeyeventKeyeventstressor : evidencetype {
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
 [System.SerializableAttribute()]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.aopkb.org/aop-xml")]
+public enum dataKeyeventSource {
+    
+    /// <remarks/>
+    AOPWiki,
+    
+    /// <remarks/>
+    Effectopedia,
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlEnumAttribute("Intermediate Effects DB")]
+    IntermediateEffectsDB,
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlEnumAttribute("AOP Xplorer")]
+    AOPXplorer,
+    
+    /// <remarks/>
+    Other,
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+[System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.aopkb.org/aop-xml")]
 public partial class dataKeyeventrelationship {
     
     private dataKeyeventrelationshipTitle titleField;
-    
-    private qatype qualityassuranceField;
     
     private string descriptionField;
     
@@ -1999,11 +1893,17 @@ public partial class dataKeyeventrelationship {
     
     private string evidencesupportingtaxonomicapplicabilityField;
     
+    private string referencesField;
+    
     private dataKeyeventrelationshipSource sourceField;
     
     private bool sourceFieldSpecified;
     
     private string sourceinternalidField;
+    
+    private string uriField;
+    
+    private qatype qualityassuranceField;
     
     private System.DateTime creationtimestampField;
     
@@ -2012,8 +1912,6 @@ public partial class dataKeyeventrelationship {
     private System.DateTime lastmodificationtimestampField;
     
     private bool lastmodificationtimestampFieldSpecified;
-    
-    private string referencesField;
     
     private string idField;
     
@@ -2024,17 +1922,6 @@ public partial class dataKeyeventrelationship {
         }
         set {
             this.titleField = value;
-        }
-    }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("quality-assurance")]
-    public qatype qualityassurance {
-        get {
-            return this.qualityassuranceField;
-        }
-        set {
-            this.qualityassuranceField = value;
         }
     }
     
@@ -2104,6 +1991,16 @@ public partial class dataKeyeventrelationship {
     }
     
     /// <remarks/>
+    public string references {
+        get {
+            return this.referencesField;
+        }
+        set {
+            this.referencesField = value;
+        }
+    }
+    
+    /// <remarks/>
     public dataKeyeventrelationshipSource source {
         get {
             return this.sourceField;
@@ -2132,6 +2029,27 @@ public partial class dataKeyeventrelationship {
         }
         set {
             this.sourceinternalidField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public string uri {
+        get {
+            return this.uriField;
+        }
+        set {
+            this.uriField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute("quality-assurance")]
+    public qatype qualityassurance {
+        get {
+            return this.qualityassuranceField;
+        }
+        set {
+            this.qualityassuranceField = value;
         }
     }
     
@@ -2176,16 +2094,6 @@ public partial class dataKeyeventrelationship {
         }
         set {
             this.lastmodificationtimestampFieldSpecified = value;
-        }
-    }
-    
-    /// <remarks/>
-    public string references {
-        get {
-            return this.referencesField;
-        }
-        set {
-            this.referencesField = value;
         }
     }
     
@@ -2412,10 +2320,6 @@ public partial class dataAop {
     
     private status statusField;
     
-    private System.DateTime creationtimestampField;
-    
-    private System.DateTime lastmodificationtimestampField;
-    
     private string abstractField;
     
     private string backgroundField;
@@ -2436,6 +2340,10 @@ public partial class dataAop {
     
     private string potentialapplicationsField;
     
+    private dataAopAopstressor[] aopstressorsField;
+    
+    private string referencesField;
+    
     private dataAopSource sourceField;
     
     private bool sourceFieldSpecified;
@@ -2444,9 +2352,11 @@ public partial class dataAop {
     
     private string[] uriField;
     
-    private string referencesField;
+    private qatype qualityassuranceField;
     
-    private dataAopAopstressor[] aopstressorsField;
+    private System.DateTime creationtimestampField;
+    
+    private System.DateTime lastmodificationtimestampField;
     
     private string idField;
     
@@ -2488,28 +2398,6 @@ public partial class dataAop {
         }
         set {
             this.statusField = value;
-        }
-    }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("creation-timestamp")]
-    public System.DateTime creationtimestamp {
-        get {
-            return this.creationtimestampField;
-        }
-        set {
-            this.creationtimestampField = value;
-        }
-    }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute("last-modification-timestamp")]
-    public System.DateTime lastmodificationtimestamp {
-        get {
-            return this.lastmodificationtimestampField;
-        }
-        set {
-            this.lastmodificationtimestampField = value;
         }
     }
     
@@ -2623,6 +2511,28 @@ public partial class dataAop {
     }
     
     /// <remarks/>
+    [System.Xml.Serialization.XmlArrayAttribute("aop-stressors")]
+    [System.Xml.Serialization.XmlArrayItemAttribute("aop-stressor", IsNullable=false)]
+    public dataAopAopstressor[] aopstressors {
+        get {
+            return this.aopstressorsField;
+        }
+        set {
+            this.aopstressorsField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public string references {
+        get {
+            return this.referencesField;
+        }
+        set {
+            this.referencesField = value;
+        }
+    }
+    
+    /// <remarks/>
     public dataAopSource source {
         get {
             return this.sourceField;
@@ -2666,24 +2576,35 @@ public partial class dataAop {
     }
     
     /// <remarks/>
-    public string references {
+    [System.Xml.Serialization.XmlElementAttribute("quality-assurance")]
+    public qatype qualityassurance {
         get {
-            return this.referencesField;
+            return this.qualityassuranceField;
         }
         set {
-            this.referencesField = value;
+            this.qualityassuranceField = value;
         }
     }
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlArrayAttribute("aop-stressors")]
-    [System.Xml.Serialization.XmlArrayItemAttribute("aop-stressor", IsNullable=false)]
-    public dataAopAopstressor[] aopstressors {
+    [System.Xml.Serialization.XmlElementAttribute("creation-timestamp")]
+    public System.DateTime creationtimestamp {
         get {
-            return this.aopstressorsField;
+            return this.creationtimestampField;
         }
         set {
-            this.aopstressorsField = value;
+            this.creationtimestampField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute("last-modification-timestamp")]
+    public System.DateTime lastmodificationtimestamp {
+        get {
+            return this.lastmodificationtimestampField;
+        }
+        set {
+            this.lastmodificationtimestampField = value;
         }
     }
     
@@ -3036,6 +2957,28 @@ public partial class dataAopOverallassessment {
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
 [System.SerializableAttribute()]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.aopkb.org/aop-xml")]
+public partial class dataAopAopstressor : evidencetype {
+    
+    private string idField;
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlAttributeAttribute()]
+    public string id {
+        get {
+            return this.idField;
+        }
+        set {
+            this.idField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
+[System.SerializableAttribute()]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.aopkb.org/aop-xml")]
 public enum dataAopSource {
     
@@ -3055,28 +2998,6 @@ public enum dataAopSource {
     
     /// <remarks/>
     Other,
-}
-
-/// <remarks/>
-[System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.6.1055.0")]
-[System.SerializableAttribute()]
-[System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.ComponentModel.DesignerCategoryAttribute("code")]
-[System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.aopkb.org/aop-xml")]
-public partial class dataAopAopstressor : evidencetype {
-    
-    private string idField;
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    public string id {
-        get {
-            return this.idField;
-        }
-        set {
-            this.idField = value;
-        }
-    }
 }
 
 /// <remarks/>

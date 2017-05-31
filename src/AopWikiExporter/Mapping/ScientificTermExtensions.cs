@@ -61,9 +61,7 @@ namespace AopWikiExporter.Mapping
                 source = source.Source,
                 sourceid = source.SourceId,
                 name = source.Term,
-                synonym = source.Synonym,
-                creationtimestamp = source.CreatedAt,
-                lastmodificationtimestamp = source.UpdatedAt
+                synonym = source.Synonym
             };
 
             if (destination is IXmlIdentifiable identifiable)

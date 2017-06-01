@@ -31,7 +31,7 @@ namespace AopWikiExporter.Mapping
                             c => new
                             {
                                 AopWikiId = c.ChemicalId,
-                                c.UserTerm
+                                UserTerm = c.UserTerm != null ? c.UserTerm.Trim() : null
                             })
                     })
                 .ToList() // Execute query

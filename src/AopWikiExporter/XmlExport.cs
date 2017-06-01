@@ -119,7 +119,12 @@ namespace AopWikiExporter
 
                 var wikiStatusesByWikiId = context
                     .Statuses
-                    .MapToLookupTable<Status, statusWikistatus>();
+                    .MapToLookupTable(
+                        new Dictionary<string, statusWikistatus>
+                        {
+                            ["Open for adopton"] = statusWikistatus.Openforadoption
+                        });
+
 
                 var oecdStatusesByWikiId = context
                     .OecdStatuses

@@ -13,7 +13,8 @@ namespace AopWikiExporter.Mapping
         static readonly Regex s_NonAlphaCharacters = new Regex("[^A-Za-z0-9]");
 
         public static IReadOnlyDictionary<int, TEnum> MapToLookupTable<TLookup, TEnum>(
-            this IQueryable<TLookup> lookupTerms)
+            this IQueryable<TLookup> lookupTerms,
+            IReadOnlyDictionary<string, TEnum> enumValuesByAlternateTerm = null)
             where TLookup : IAopWikiIdentifiable, ITerm
             where TEnum : struct
         {
@@ -25,9 +26,18 @@ namespace AopWikiExporter.Mapping
             return lookupTerms.ToList()
                 .ToDictionary(
                     x => x.Id,
-                    x => UnsafeEnums.GetMember<TEnum>(GetEnumMemberName(x.Term), true)?.Value
-                         ?? throw new ArgumentException(
-                             $"Could not find enum value {x.Term} in type {typeof(TEnum).Name}"));
+                    x =>
+                    {
+                        var enumMember = default(TEnum);
+                        if (enumValuesByAlternateTerm?.TryGetValue(x.Term, out enumMember) ?? false)
+                        {
+                            return enumMember;
+                        }
+
+                        return UnsafeEnums.GetMember<TEnum>(GetEnumMemberName(x.Term), true)?.Value
+                               ?? throw new ArgumentException(
+                                   $"Could not find enum value {x.Term} in type {typeof(TEnum).Name}");
+                    });
         }
 
         static string GetEnumMemberName(string term)

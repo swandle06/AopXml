@@ -14,15 +14,15 @@ namespace AopWikiExporter
     class XmlExport
     {
         readonly string _connectionString;
-        readonly bool _excludeUnreferencedChemicals;
+        readonly bool _excludeUnreferencedElements;
 
-        public XmlExport(string connectionString, bool excludeUnreferencedChemicals)
+        public XmlExport(string connectionString, bool excludeUnreferencedElements)
         {
             if (string.IsNullOrWhiteSpace(connectionString))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(connectionString));
 
             this._connectionString = connectionString;
-            this._excludeUnreferencedChemicals = excludeUnreferencedChemicals;
+            this._excludeUnreferencedElements = excludeUnreferencedElements;
         }
 
         public void WriteToOutput(Stream output)
@@ -36,42 +36,36 @@ namespace AopWikiExporter
             using (var tx = context.Database.BeginTransaction())
             {
                 var data = new data();
-                var referenceLists = new List<IEnumerable<IWikiReference<IXmlIdentifiable>>>();
 
                 var biologicalProcessesByWikiId = context.BiologicalProcesses
                     .Select(x => x.MapToSchema())
                     .ToList()
-                    .AddToReferencesAndAssignToRoot(referenceLists, data)
-                    .ToDictionary(x => x.AopWikiId, x => x);
+                    .ToDictionary(x => x.GetWikiId(), x => x);
 
                 var biologicalActionsByWikiId = context.BiologicalActions
                     .Select(x => x.MapToSchema())
                     .ToList()
-                    .AddToReferencesAndAssignToRoot(referenceLists, data)
-                    .ToDictionary(x => x.AopWikiId, x => x);
+                    .ToDictionary(x => x.GetWikiId(), x => x);
 
                 var taxonomyMapper = new TaxonomyMapper(context.TaxonTerms);
-                taxonomyMapper.GetUniqueMappedObjects().AddToReferencesAndAssignToRoot(referenceLists, data);
 
                 var chemicalsByWikiId = context.Chemicals
                     .MapToSchema(context.ChemicalSynonyms)
-                    .AddToReferencesAndAssignToRoot(referenceLists, data)
-                    .ToDictionary(x => x.AopWikiId, x => x);
+                    .ToDictionary(x => x.GetWikiId(), x => x);
 
                 var stressorsByWikiId = context.Stressors
                     .MapToSchema(chemicalsByWikiId)
-                    .AddToReferencesAndAssignToRoot(referenceLists, data)
-                    .ToDictionary(x => x.AopWikiId, x => x);
+                    .ToDictionary(x => x.GetWikiId(), x => x);
 
                 var cellTermsByWikiId = context.CellTerms
                     .ToList()
                     .Select(x => x.MapToSchema())
-                    .ToDictionary(x => x.AopWikiId, x => x);
+                    .ToDictionary(x => x.GetWikiId(), x => x);
 
                 var organTermsByWikiId = context.OrganTerms
                     .ToList()
                     .Select(x => x.MapToSchema())
-                    .ToDictionary(x => x.AopWikiId, x => x);
+                    .ToDictionary(x => x.GetWikiId(), x => x);
 
                 var lifeStagesByWikiId = context
                     .LifeStageTerms
@@ -88,8 +82,7 @@ namespace AopWikiExporter
                 var biologicalObjectsByWikiId = context.BiologicalObjects
                     .Select(x => x.MapToSchema(biologicalOrganizationsByWikiId))
                     .ToList()
-                    .AddToReferencesAndAssignToRoot(referenceLists, data)
-                    .ToDictionary(x => x.AopWikiId, x => x);
+                    .ToDictionary(x => x.GetWikiId(), x => x);
 
                 var confidenceLevelsByWikiId = context
                     .ConfidenceLevels
@@ -108,14 +101,12 @@ namespace AopWikiExporter
                         lifeStagesByWikiId,
                         taxonomyMapper,
                         stressorsByWikiId)
-                    .AddToReferencesAndAssignToRoot(referenceLists, data)
-                    .ToDictionary(x => x.AopWikiId, x => x);
+                    .ToDictionary(x => x.GetWikiId(), x => x);
 
                 var keyEventRelationshipsByWikiId = context
                     .Relationships
                     .MapToSchema(keyEventByWikiId)
-                    .AddToReferencesAndAssignToRoot(referenceLists, data)
-                    .ToDictionary(x => x.AopWikiId, x => x);
+                    .ToDictionary(x => x.GetWikiId(), x => x);
 
                 var wikiStatusesByWikiId = context
                     .Statuses
@@ -124,7 +115,6 @@ namespace AopWikiExporter
                         {
                             ["Open for adopton"] = statusWikistatus.Openforadoption
                         });
-
 
                 var oecdStatusesByWikiId = context
                     .OecdStatuses
@@ -147,32 +137,53 @@ namespace AopWikiExporter
                         stressorsByWikiId,
                         sexesByWikiId,
                         lifeStagesByWikiId,
-                        taxonomyMapper)
-                    .AddToReferencesAndAssignToRoot(referenceLists, data);
+                        taxonomyMapper);
 
-                if (this._excludeUnreferencedChemicals)
+                if (this._excludeUnreferencedElements)
                 {
-                    // Slow but does the job for now
-                    var referencedStressorIds = new HashSet<string>(
-                        aops.SelectMany(a => a.Target.aopstressors.Select(y => y.id)));
+                    keyEventRelationshipsByWikiId = aops.SelectMany(x => x.keyeventrelationships)
+                        .Where(x => x != null)
+                        .GroupBy(x => x.id)
+                        .Select(x => x.First())
+                        .ToDictionary(x => x.GetWikiId(), x => keyEventRelationshipsByWikiId[x.GetWikiId()]);
 
-                    var referencedChemicalIds = new HashSet<string>(
-                        stressorsByWikiId
-                            .Select(s => s.Value.Target)
-                            .Where(s => referencedStressorIds.Contains(s.id))
-                            .SelectMany(y => y.chemicals.Select(c => c.chemicalid)));
+                    keyEventByWikiId = aops
+                        .SelectMany(
+                            x => (x.molecularinitiatingevent?.Select(m => m?.GetWikiId() ?? 0) ?? new int[0])
+                                .Union(x.adverseoutcome?.Select(a => a?.GetWikiId() ?? 0) ?? new int[0])
+                                .Union(x.keyeventessentialities?.Select(e => e?.GetWikiId() ?? 0) ?? new int[0]))
+                        .Union(
+                            keyEventRelationshipsByWikiId
+                                .Values
+                                .SelectMany(
+                                    k => new[] { k.title?.upstreamid?.GetWikiId(), k.title?.downstreamid?.GetWikiId() })
+                                .Where(v => v != null).Select(v => v.Value))
+                        .Distinct()
+                        .ToDictionary(x => x, x => keyEventByWikiId[x]);
 
-                    var referencedChemicals =
-                        chemicalsByWikiId.Where(x => referencedChemicalIds.Contains(x.Value.Target.id));
+                    stressorsByWikiId = aops
+                        .SelectMany(x => x.aopstressors?.Select(s => s.GetWikiId()) ?? new int[0])
+                        .Union(keyEventByWikiId.Values.SelectMany(k => k.keyeventstressors?.Select(s => s.GetWikiId())))
+                        .Distinct()
+                        .ToDictionary(x => x, x => stressorsByWikiId[x]);
 
-                    referenceLists = referenceLists
-                        .Where(x => !(x.FirstOrDefault() is IWikiReference<dataChemical>))
-                        .ToList();
-
-                    referencedChemicals.Select(x => x.Value)
-                        .ToList()
-                        .AddToReferencesAndAssignToRoot(referenceLists, data);
+                    chemicalsByWikiId = stressorsByWikiId
+                        .Values
+                        .SelectMany(x => x.chemicals?.Select(c => c.GetWikiId()) ?? new int[0])
+                        .Distinct()
+                        .ToDictionary(x => x, x => chemicalsByWikiId[x]);
                 }
+
+                var referenceLists = new List<IEnumerable<IXmlIdentifiable>>();
+                biologicalProcessesByWikiId.Values.AddToReferencesAndAssignToRoot(referenceLists, data);
+                biologicalActionsByWikiId.Values.AddToReferencesAndAssignToRoot(referenceLists, data);
+                taxonomyMapper.GetUniqueMappedObjects().AddToReferencesAndAssignToRoot(referenceLists, data);
+                chemicalsByWikiId.Values.AddToReferencesAndAssignToRoot(referenceLists, data);
+                stressorsByWikiId.Values.AddToReferencesAndAssignToRoot(referenceLists, data);
+                biologicalObjectsByWikiId.Values.AddToReferencesAndAssignToRoot(referenceLists, data);
+                keyEventByWikiId.Values.AddToReferencesAndAssignToRoot(referenceLists, data);
+                keyEventRelationshipsByWikiId.Values.AddToReferencesAndAssignToRoot(referenceLists, data);
+                aops.AddToReferencesAndAssignToRoot(referenceLists, data);
 
                 data.vendorspecific = new dataVendorspecific
                 {
@@ -201,7 +212,8 @@ namespace AopWikiExporter
                     var namespaces = new XmlSerializerNamespaces();
                     namespaces.Add(
                         string.Empty,
-                        typeof(data).GetTypeInfo().GetCustomAttribute<XmlTypeAttribute>()?.Namespace ?? string.Empty);
+                        typeof(data).GetTypeInfo().GetCustomAttribute<XmlTypeAttribute>()?.Namespace
+                        ?? string.Empty);
                     var rootSerializer = new XmlSerializer(data.GetType());
                     rootSerializer.Serialize(writer, data, namespaces);
                 }

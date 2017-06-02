@@ -7,15 +7,15 @@ namespace AopWikiExporter.Mapping
 {
     class TaxonomyMapper
     {
-        readonly IDictionary<int, IWikiReference<dataTaxonomy>> _mappedTaxonomiesByAopWikiTermId;
-        readonly List<IWikiReference<dataTaxonomy>> _uniqueTaxonomies;
+        readonly IDictionary<int, dataTaxonomy> _mappedTaxonomiesByAopWikiTermId;
+        readonly List<dataTaxonomy> _uniqueTaxonomies;
 
         public TaxonomyMapper(IQueryable<TaxonTerm> allTaxonTerms)
         {
             if (allTaxonTerms == null) throw new ArgumentNullException(nameof(allTaxonTerms));
 
-            this._mappedTaxonomiesByAopWikiTermId = new Dictionary<int, IWikiReference<dataTaxonomy>>();
-            this._uniqueTaxonomies = new List<IWikiReference<dataTaxonomy>>();
+            this._mappedTaxonomiesByAopWikiTermId = new Dictionary<int, dataTaxonomy>();
+            this._uniqueTaxonomies = new List<dataTaxonomy>();
 
             var mappings = allTaxonTerms
                 .GroupBy(x => x.Term)
@@ -37,14 +37,14 @@ namespace AopWikiExporter.Mapping
             }
         }
 
-        public IWikiReference<dataTaxonomy> GetByAopWikiId(int aopWikiId)
+        public dataTaxonomy GetByAopWikiId(int aopWikiId)
         {
             return this._mappedTaxonomiesByAopWikiTermId.TryGetValue(aopWikiId, out var taxonomy)
                 ? taxonomy
                 : throw new KeyNotFoundException($"No mapped taxonomy found for id: {aopWikiId}");
         }
 
-        public IReadOnlyCollection<IWikiReference<dataTaxonomy>> GetUniqueMappedObjects()
+        public IReadOnlyCollection<dataTaxonomy> GetUniqueMappedObjects()
         {
             return this._uniqueTaxonomies;
         }

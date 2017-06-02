@@ -7,7 +7,7 @@ namespace AopWikiExporter.Mapping
 {
     static class ChemicalExtensions
     {
-        public static IReadOnlyCollection<IWikiReference<dataChemical>> MapToSchema(
+        public static IReadOnlyCollection<dataChemical> MapToSchema(
             this IQueryable<Chemical> chemicals,
             IQueryable<ChemicalSynonym> chemicalSynonyms)
         {
@@ -15,19 +15,16 @@ namespace AopWikiExporter.Mapping
             if (chemicalSynonyms == null) throw new ArgumentNullException(nameof(chemicalSynonyms));
 
             var mappedChemicals = chemicals.Select(
-                    x => new WikiReference<dataChemical>
+                    x => new dataChemical
                     {
-                        AopWikiId = x.Id,
-                        Target = new dataChemical
-                        {
-                            id = Guid.NewGuid().ToString(),
-                            casrn = x.Casrn != null ? x.Casrn.Trim() : null,
-                            dsstoxid = x.DsstoxSubstanceId != null ? x.DsstoxSubstanceId.Trim() : null,
-                            jcheminchikey = x.JchemInchiKey != null ? x.JchemInchiKey.Trim() : null,
-                            indigoinchikey = x.IndigoInchiKey != null ? x.IndigoInchiKey.Trim() : null,
-                            preferredname = x.PreferredName != null ? x.PreferredName.Trim() : null
-                        }
-                    })
+                        id = Guid.NewGuid().ToString(),
+                        casrn = x.Casrn != null ? x.Casrn.Trim() : null,
+                        dsstoxid = x.DsstoxSubstanceId != null ? x.DsstoxSubstanceId.Trim() : null,
+                        jcheminchikey = x.JchemInchiKey != null ? x.JchemInchiKey.Trim() : null,
+                        indigoinchikey = x.IndigoInchiKey != null ? x.IndigoInchiKey.Trim() : null,
+                        preferredname = x.PreferredName != null ? x.PreferredName.Trim() : null
+                    }.SetWikiId(x.Id)
+                )
                 .ToList();
 
             var synonymJoinTable = chemicalSynonyms
@@ -37,9 +34,9 @@ namespace AopWikiExporter.Mapping
 
             foreach (var mappedChemical in mappedChemicals)
             {
-                if (synonymJoinTable.TryGetValue(mappedChemical.AopWikiId, out var synonyms))
+                if (synonymJoinTable.TryGetValue(mappedChemical.GetWikiId(), out var synonyms))
                 {
-                    mappedChemical.Target.synonyms = synonyms.Where(t => t.Term != null)
+                    mappedChemical.synonyms = synonyms.Where(t => t.Term != null)
                         .Select(t => t.Term.Trim())
                         .ToArray();
                 }

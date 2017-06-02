@@ -28,15 +28,15 @@ namespace AopWikiExporter
                 {
                     ValueOptional = false
                 };
-                var excludeUnreferencedChemicalsArgument = new SwitchArgument(
+                var excludeUnreferencedElementsArgument = new SwitchArgument(
                     'e',
-                    "exclude-unreferenced-chemicals",
-                    "Exclude unreferenced chemicals from output (to reduce file size)",
+                    "exclude-unreferenced-elements",
+                    "Exclude unreferenced elements from output (to reduce file size)",
                     false);
 
                 parser.Arguments.Add(connectionStringArgument);
                 parser.Arguments.Add(outputFileArgument);
-                parser.Arguments.Add(excludeUnreferencedChemicalsArgument);
+                parser.Arguments.Add(excludeUnreferencedElementsArgument);
 
                 parser.ParseCommandLine(args);
 
@@ -47,7 +47,7 @@ namespace AopWikiExporter
 
                 using (var output = GetOutputStream(outputFileArgument.Value))
                 {
-                    var exporter = new XmlExport(connectionStringArgument.Value, excludeUnreferencedChemicalsArgument.Value);
+                    var exporter = new XmlExport(connectionStringArgument.Value, excludeUnreferencedElementsArgument.Value);
                     exporter.WriteToOutput(output);
                 }
 

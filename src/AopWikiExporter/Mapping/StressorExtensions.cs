@@ -7,9 +7,9 @@ namespace AopWikiExporter.Mapping
 {
     static class StressorExtensions
     {
-        public static IReadOnlyCollection<IWikiReference<dataStressor>> MapToSchema(
+        public static IReadOnlyCollection<dataStressor> MapToSchema(
             this IQueryable<Stressor> stressors,
-            IReadOnlyDictionary<int, IWikiReference<dataChemical>> chemicalsByWikiId)
+            IReadOnlyDictionary<int, dataChemical> chemicalsByWikiId)
         {
             if (stressors == null) throw new ArgumentNullException(nameof(stressors));
             if (chemicalsByWikiId == null) throw new ArgumentNullException(nameof(chemicalsByWikiId));
@@ -17,7 +17,6 @@ namespace AopWikiExporter.Mapping
             return stressors.Select(
                     x => new
                     {
-                        AopWikiId = x.Id,
                         MappedTarget = new dataStressor
                         {
                             id = Guid.NewGuid().ToString(),
@@ -26,7 +25,7 @@ namespace AopWikiExporter.Mapping
                             exposurecharacterization = x.CharacterizationOfExposure,
                             creationtimestamp = x.CreatedAt,
                             lastmodificationtimestamp = x.UpdatedAt
-                        },
+                        }.SetWikiId(x.Id),
                         Chemicals = x.StressorChemicals.Select(
                             c => new
                             {
@@ -38,22 +37,16 @@ namespace AopWikiExporter.Mapping
                 .Select(
                     x =>
                     {
-                        var reference = new WikiReference<dataStressor>
-                        {
-                            AopWikiId = x.AopWikiId,
-                            Target = x.MappedTarget
-                        };
-                        reference.Target.chemicals = x.Chemicals.Select(
+                        x.MappedTarget.chemicals = x.Chemicals.Select(
                                 c => new dataStressorChemicalinitiator
                                 {
                                     chemicalid = c.AopWikiId.HasValue
-                                        ? chemicalsByWikiId[c.AopWikiId.Value].Target.id
+                                        ? chemicalsByWikiId[c.AopWikiId.Value].id
                                         : null,
-                                    userterm = c.UserTerm
-                                })
+                                    userterm = c.UserTerm?.Trim()
+                                }.SetWikiId(c.AopWikiId.Value))
                             .ToArray();
-
-                        return reference;
+                        return x.MappedTarget;
                     })
                 .ToList();
         }

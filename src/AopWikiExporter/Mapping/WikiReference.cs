@@ -8,32 +8,20 @@ using System.Xml.Serialization;
 
 namespace AopWikiExporter.Mapping
 {
-    interface IWikiReference<out T>
-    {
-        int AopWikiId { get; }
-        T Target { get; }
-    }
-
-    class WikiReference<T> : IWikiReference<T>
-    {
-        public int AopWikiId { get; set; }
-        public T Target { get; set; }
-    }
-
     static class WikiReferenceExtensions
     {
         static readonly ConcurrentDictionary<Type, string> s_TagNamesByType = new ConcurrentDictionary<Type, string>();
 
-        public static IReadOnlyCollection<IWikiReference<TXmlIdentifiable>> AddToReferencesAndAssignToRoot<TXmlIdentifiable>(
-            this IReadOnlyCollection<IWikiReference<TXmlIdentifiable>> collection,
-            IList<IEnumerable<IWikiReference<IXmlIdentifiable>>> referenceLists,
-            data root)
+        public static IReadOnlyCollection<TXmlIdentifiable> AddToReferencesAndAssignToRoot<TXmlIdentifiable>(
+            this IReadOnlyCollection<TXmlIdentifiable> collection,
+            IList<IEnumerable<IXmlIdentifiable>> referenceLists,
+            data root) where TXmlIdentifiable : IXmlIdentifiable
         {
             if (collection == null) throw new ArgumentNullException(nameof(collection));
             if (referenceLists == null) throw new ArgumentNullException(nameof(referenceLists));
             if (root == null) throw new ArgumentNullException(nameof(root));
 
-            referenceLists.Add(collection.Cast<IWikiReference<IXmlIdentifiable>>());
+            referenceLists.Add(collection.Cast<IXmlIdentifiable>());
 
             var property = root
                 .GetType()
@@ -44,27 +32,27 @@ namespace AopWikiExporter.Mapping
                 throw new InvalidOperationException(
                     $"root element doesn't have a property of type {typeof(TXmlIdentifiable).Name}[]");
             }
-            property.SetValue(root, collection.Select(x => x.Target).ToArray());
+            property.SetValue(root, collection.ToArray());
 
             return collection;
         }
 
-        public static XmlElement ToXmlElement(this IWikiReference<IXmlIdentifiable> reference)
+        public static XmlElement ToXmlElement(this IXmlIdentifiable reference)
         {
             var document = new XmlDocument();
             var tagName = s_TagNamesByType.GetOrAdd(
-                reference.Target.GetType(),
+                reference.GetType(),
                 t => typeof(data).GetTypeInfo()
                          .GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                         .FirstOrDefault(p => p.PropertyType == reference.Target.GetType().MakeArrayType())
+                         .FirstOrDefault(p => p.PropertyType == reference.GetType().MakeArrayType())
                          ?.GetCustomAttribute<XmlElementAttribute>()
                          ?.ElementName ?? throw new ArgumentException(
-                         $"data root element doesn't contain a property of type {reference.Target.GetType().Name}[]"));
+                         $"data root element doesn't contain a property of type {reference.GetType().Name}[]"));
             var element = document.CreateElement($"{tagName}-reference");
             var idAttribute = document.CreateAttribute("id");
-            idAttribute.Value = reference.Target.id;
+            idAttribute.Value = reference.id;
             var aopWikiIdAttribute = document.CreateAttribute("aop-wiki-id");
-            aopWikiIdAttribute.Value = reference.AopWikiId.ToString();
+            aopWikiIdAttribute.Value = reference.GetWikiId().ToString();
             element.Attributes.Append(idAttribute);
             element.Attributes.Append(aopWikiIdAttribute);
             return element;

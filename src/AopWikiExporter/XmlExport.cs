@@ -15,14 +15,22 @@ namespace AopWikiExporter
     {
         readonly string _connectionString;
         readonly bool _excludeUnreferencedElements;
+        readonly int? _targetId;
+        readonly TargetType? _targetType;
 
-        public XmlExport(string connectionString, bool excludeUnreferencedElements)
+        public XmlExport(
+            string connectionString, 
+            bool excludeUnreferencedElements, 
+            int? targetId, 
+            TargetType? targetType)
         {
             if (string.IsNullOrWhiteSpace(connectionString))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(connectionString));
 
             this._connectionString = connectionString;
-            this._excludeUnreferencedElements = excludeUnreferencedElements;
+            this._excludeUnreferencedElements = targetId.HasValue || excludeUnreferencedElements;
+            this._targetId = targetId;
+            this._targetType = targetType;
         }
 
         public void WriteToOutput(Stream output)
@@ -35,6 +43,8 @@ namespace AopWikiExporter
             })
             using (var tx = context.Database.BeginTransaction())
             {
+                var enumsByWikiId = EnumsByWikiId.CreateFrom(context);
+
                 var data = new data();
 
                 var biologicalProcessesByWikiId = context.BiologicalProcesses
@@ -67,28 +77,12 @@ namespace AopWikiExporter
                     .Select(x => x.MapToSchema())
                     .ToDictionary(x => x.GetWikiId(), x => x);
 
-                var lifeStagesByWikiId = context
-                    .LifeStageTerms
-                    .MapToLookupTable<LifeStageTerm, applicabilitytypeLifestageLifestage>();
-
-                var sexesByWikiId = context
-                    .SexTerms
-                    .MapToLookupTable<SexTerm, applicabilitytypeSexSex>();
-
-                var biologicalOrganizationsByWikiId = context
-                    .BiologicalOrganizations
-                    .MapToLookupTable<BiologicalOrganization, biologicalorganizationleveltype>();
-
                 var biologicalObjectsByWikiId = context.BiologicalObjects
-                    .Select(x => x.MapToSchema(biologicalOrganizationsByWikiId))
+                    .Select(x => x.MapToSchema(enumsByWikiId.BiologicalOrganizations))
                     .ToList()
                     .ToDictionary(x => x.GetWikiId(), x => x);
 
-                var confidenceLevelsByWikiId = context
-                    .ConfidenceLevels
-                    .MapToLookupTable<ConfidenceLevel, confidenceleveltype>();
-
-                var keyEventByWikiId = context
+                var keyEventsByWikiId = context
                     .Events
                     .MapToSchema(
                         organTermsByWikiId,
@@ -96,74 +90,68 @@ namespace AopWikiExporter
                         biologicalObjectsByWikiId,
                         biologicalProcessesByWikiId,
                         biologicalActionsByWikiId,
-                        confidenceLevelsByWikiId,
-                        sexesByWikiId,
-                        lifeStagesByWikiId,
+                        enumsByWikiId.ConfidenceLevels,
+                        enumsByWikiId.Sexes,
+                        enumsByWikiId.LifeStages,
                         taxonomyMapper,
                         stressorsByWikiId)
                     .ToDictionary(x => x.GetWikiId(), x => x);
 
                 var keyEventRelationshipsByWikiId = context
                     .Relationships
-                    .MapToSchema(keyEventByWikiId)
+                    .MapToSchema(keyEventsByWikiId)
                     .ToDictionary(x => x.GetWikiId(), x => x);
 
-                var wikiStatusesByWikiId = context
-                    .Statuses
-                    .MapToLookupTable(
-                        new Dictionary<string, statusWikistatus>
-                        {
-                            ["Open for adopton"] = statusWikistatus.Openforadoption
-                        });
-
-                var oecdStatusesByWikiId = context
-                    .OecdStatuses
-                    .MapToLookupTable<OecdStatus, statusOecdstatus>();
-
-                var saaopStatusesByWikiId = context
-                    .SaaopStatuses
-                    .MapToLookupTable<SaaopStatus, statusSaaopstatus>();
-
-                var aops = context
+                var aopsByWikiId = context
                     .Aops
                     .MapToSchema(
-                        wikiStatusesByWikiId,
-                        oecdStatusesByWikiId,
-                        saaopStatusesByWikiId,
                         context.AopEvents,
-                        keyEventByWikiId,
+                        keyEventsByWikiId,
                         keyEventRelationshipsByWikiId,
-                        confidenceLevelsByWikiId,
                         stressorsByWikiId,
-                        sexesByWikiId,
-                        lifeStagesByWikiId,
-                        taxonomyMapper);
+                        taxonomyMapper,
+                        enumsByWikiId)
+                    .ToDictionary(x => x.GetWikiId(), x => x);
 
+                IReadOnlyCollection<dataAop> targetAops = aopsByWikiId.Values;
                 if (this._excludeUnreferencedElements)
                 {
-                    keyEventRelationshipsByWikiId = aops.SelectMany(x => x.keyeventrelationships)
+                    targetAops = this._targetType == TargetType.Aop
+                                 && this._targetId.HasValue
+                                 && aopsByWikiId.TryGetValue(this._targetId.Value, out var matchedAop)
+                        ? new[] { matchedAop }
+                        : new dataAop[0];
+
+                    keyEventRelationshipsByWikiId = targetAops.SelectMany(x => x.keyeventrelationships)
                         .Where(x => x != null)
                         .GroupBy(x => x.id)
                         .Select(x => x.First())
                         .ToDictionary(x => x.GetWikiId(), x => keyEventRelationshipsByWikiId[x.GetWikiId()]);
 
-                    keyEventByWikiId = aops
-                        .SelectMany(
-                            x => (x.molecularinitiatingevent?.Select(m => m?.GetWikiId() ?? 0) ?? new int[0])
-                                .Union(x.adverseoutcome?.Select(a => a?.GetWikiId() ?? 0) ?? new int[0])
-                                .Union(x.keyeventessentialities?.Select(e => e?.GetWikiId() ?? 0) ?? new int[0]))
-                        .Union(
-                            keyEventRelationshipsByWikiId
-                                .Values
-                                .SelectMany(
-                                    k => new[] { k.title?.upstreamid?.GetWikiId(), k.title?.downstreamid?.GetWikiId() })
-                                .Where(v => v != null).Select(v => v.Value))
-                        .Distinct()
-                        .ToDictionary(x => x, x => keyEventByWikiId[x]);
+                    keyEventsByWikiId = this._targetType == TargetType.KeyEvent
+                                        && this._targetId.HasValue
+                                        && keyEventsByWikiId.TryGetValue(this._targetId.Value, out var matchedKeyEvent)
+                        ? new Dictionary<int, dataKeyevent> { [this._targetId.Value] = matchedKeyEvent }
+                        : targetAops
+                            .SelectMany(
+                                x => (x.molecularinitiatingevent?.Select(m => m?.GetWikiId() ?? 0) ?? new int[0])
+                                    .Union(x.adverseoutcome?.Select(a => a?.GetWikiId() ?? 0) ?? new int[0])
+                                    .Union(x.keyeventessentialities?.Select(e => e?.GetWikiId() ?? 0) ?? new int[0]))
+                            .Union(
+                                keyEventRelationshipsByWikiId
+                                    .Values
+                                    .SelectMany(
+                                        k => new[]
+                                        {
+                                            k.title?.upstreamid?.GetWikiId(), k.title?.downstreamid?.GetWikiId()
+                                        })
+                                    .Where(v => v != null).Select(v => v.Value))
+                            .Distinct()
+                            .ToDictionary(x => x, x => keyEventsByWikiId[x]);
 
-                    stressorsByWikiId = aops
+                    stressorsByWikiId = targetAops
                         .SelectMany(x => x.aopstressors?.Select(s => s.GetWikiId()) ?? new int[0])
-                        .Union(keyEventByWikiId.Values.SelectMany(k => k.keyeventstressors?.Select(s => s.GetWikiId())))
+                        .Union(keyEventsByWikiId.Values.SelectMany(k => k.keyeventstressors?.Select(s => s.GetWikiId())))
                         .Distinct()
                         .ToDictionary(x => x, x => stressorsByWikiId[x]);
 
@@ -181,9 +169,9 @@ namespace AopWikiExporter
                 chemicalsByWikiId.Values.AddToReferencesAndAssignToRoot(referenceLists, data);
                 stressorsByWikiId.Values.AddToReferencesAndAssignToRoot(referenceLists, data);
                 biologicalObjectsByWikiId.Values.AddToReferencesAndAssignToRoot(referenceLists, data);
-                keyEventByWikiId.Values.AddToReferencesAndAssignToRoot(referenceLists, data);
+                keyEventsByWikiId.Values.AddToReferencesAndAssignToRoot(referenceLists, data);
                 keyEventRelationshipsByWikiId.Values.AddToReferencesAndAssignToRoot(referenceLists, data);
-                aops.AddToReferencesAndAssignToRoot(referenceLists, data);
+                targetAops.AddToReferencesAndAssignToRoot(referenceLists, data);
 
                 data.vendorspecific = new dataVendorspecific
                 {

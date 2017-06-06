@@ -33,10 +33,30 @@ namespace AopWikiExporter
                     "exclude-unreferenced-elements",
                     "Exclude unreferenced elements from output (to reduce file size)",
                     false);
+                var targetAopId = new ValueArgument<int>(
+                    'a',
+                    "aop-id",
+                    $"Export aop having passed id. Implies {excludeUnreferencedElementsArgument.LongName}")
+                {
+                    Optional = true,
+                    ValueOptional = false
+                };
+                var targetKeyEventId = new ValueArgument<int>(
+                    'k',
+                    "key-event-id",
+                    $"Export key event having passed id. Implies {excludeUnreferencedElementsArgument.LongName}.")
+                {
+                    Optional = true,
+                    ValueOptional = false
+                };
+                var help = new SwitchArgument('h', "help", "Show this help.", false);
 
                 parser.Arguments.Add(connectionStringArgument);
                 parser.Arguments.Add(outputFileArgument);
                 parser.Arguments.Add(excludeUnreferencedElementsArgument);
+                parser.Arguments.Add(targetAopId);
+                parser.Arguments.Add(targetKeyEventId);
+                parser.Arguments.Add(help);
 
                 parser.ParseCommandLine(args);
 
@@ -45,9 +65,38 @@ namespace AopWikiExporter
                     return -1;
                 }
 
+                if (help.Value)
+                {
+                    parser.ShowUsage();
+                    return -1;
+                }
+
+                TargetType? targetType = null;
+                int? targetId = null;
+                if (targetAopId.Value != 0 && targetKeyEventId.Value != 0)
+                {
+                    throw new CommandLineException(
+                        $"You cannot specify both {targetAopId.LongName} and {targetKeyEventId.LongName}");
+                }
+
+                if (targetAopId.Value != 0)
+                {
+                    targetType = TargetType.Aop;
+                    targetId = targetAopId.Value;
+                }
+                else if (targetKeyEventId.Value != 0)
+                {
+                    targetType = TargetType.KeyEvent;
+                    targetId = targetKeyEventId.Value;
+                }
+
                 using (var output = GetOutputStream(outputFileArgument.Value))
                 {
-                    var exporter = new XmlExport(connectionStringArgument.Value, excludeUnreferencedElementsArgument.Value);
+                    var exporter = new XmlExport(
+                        connectionStringArgument.Value,
+                        excludeUnreferencedElementsArgument.Value,
+                        targetId,
+                        targetType);
                     exporter.WriteToOutput(output);
                 }
 
@@ -55,7 +104,7 @@ namespace AopWikiExporter
             }
             catch (CommandLineException ex)
             {
-                Console.Error.WriteLine($"Command line error; run with /? to see help: {ex.Message}");
+                Console.Error.WriteLine($"Command line error; run with --help to see help: {ex.Message}");
                 return -1;
             }
             catch (Exception ex)

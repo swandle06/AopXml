@@ -9,31 +9,21 @@ namespace AopWikiExporter.Mapping
     {
         public static IReadOnlyCollection<dataAop> MapToSchema(
             this IQueryable<Aop> aops,
-            IReadOnlyDictionary<int, statusWikistatus> wikiStatusesByWikiId,
-            IReadOnlyDictionary<int, statusOecdstatus> oecdStatusesByWikiId,
-            IReadOnlyDictionary<int, statusSaaopstatus> saaopStatusesByWikiId,
             IQueryable<AopEvent> aopEvents,
             IReadOnlyDictionary<int, dataKeyevent> keyEventsByWikiId,
             IReadOnlyDictionary<int, dataKeyeventrelationship> keyEventRelationshipsByWikiId,
-            IReadOnlyDictionary<int, confidenceleveltype> confidenceLevelsByWikiId,
             IReadOnlyDictionary<int, dataStressor> stressorsByWikiId,
-            IReadOnlyDictionary<int, applicabilitytypeSexSex> sexesByWikiId,
-            IReadOnlyDictionary<int, applicabilitytypeLifestageLifestage> lifeStagesByWikiId,
-            TaxonomyMapper taxonomies)
+            TaxonomyMapper taxonomies,
+            EnumsByWikiId enumsByWikiId)
         {
             if (aops == null) throw new ArgumentNullException(nameof(aops));
-            if (wikiStatusesByWikiId == null) throw new ArgumentNullException(nameof(wikiStatusesByWikiId));
-            if (oecdStatusesByWikiId == null) throw new ArgumentNullException(nameof(oecdStatusesByWikiId));
-            if (saaopStatusesByWikiId == null) throw new ArgumentNullException(nameof(saaopStatusesByWikiId));
             if (aopEvents == null) throw new ArgumentNullException(nameof(aopEvents));
             if (keyEventsByWikiId == null) throw new ArgumentNullException(nameof(keyEventsByWikiId));
             if (keyEventRelationshipsByWikiId == null)
                 throw new ArgumentNullException(nameof(keyEventRelationshipsByWikiId));
-            if (confidenceLevelsByWikiId == null) throw new ArgumentNullException(nameof(confidenceLevelsByWikiId));
             if (stressorsByWikiId == null) throw new ArgumentNullException(nameof(stressorsByWikiId));
-            if (sexesByWikiId == null) throw new ArgumentNullException(nameof(sexesByWikiId));
-            if (lifeStagesByWikiId == null) throw new ArgumentNullException(nameof(lifeStagesByWikiId));
             if (taxonomies == null) throw new ArgumentNullException(nameof(taxonomies));
+            if (enumsByWikiId == null) throw new ArgumentNullException(nameof(enumsByWikiId));
 
             return aops.Select(
                     x => new dataAop
@@ -58,15 +48,15 @@ namespace AopWikiExporter.Mapping
                         status = new status
                         {
                             wikistatus = x.StatusId.HasValue
-                                ? wikiStatusesByWikiId[x.StatusId.Value]
+                                ? enumsByWikiId.WikiStatuses[x.StatusId.Value]
                                 : statusWikistatus.UnderdevelopmentNotopenforcommentDonotcite,
 
                             oecdstatus = x.OecdStatusId.HasValue
-                                ? oecdStatusesByWikiId[x.OecdStatusId.Value]
+                                ? enumsByWikiId.OecdStatuses[x.OecdStatusId.Value]
                                 : statusOecdstatus.UnderDevelopment,
 
                             saaopstatus = x.SaaopStatusId.HasValue
-                                ? saaopStatusesByWikiId[x.SaaopStatusId.Value]
+                                ? enumsByWikiId.SaaopStatuses[x.SaaopStatusId.Value]
                                 : statusSaaopstatus.UnderDevelopment
                         },
 
@@ -77,9 +67,9 @@ namespace AopWikiExporter.Mapping
                                 .Select(
                                     s => new applicabilitytypeSex
                                     {
-                                        sex = sexesByWikiId[s.SexTermId.Value],
+                                        sex = enumsByWikiId.Sexes[s.SexTermId.Value],
                                         evidence = s.EvidenceId.HasValue
-                                            ? confidenceLevelsByWikiId[s.EvidenceId.Value]
+                                            ? enumsByWikiId.ConfidenceLevels[s.EvidenceId.Value]
                                             : confidenceleveltype.notspecified
                                     })
                                 .ToArray(),
@@ -89,9 +79,9 @@ namespace AopWikiExporter.Mapping
                                 .Select(
                                     l => new applicabilitytypeLifestage
                                     {
-                                        lifestage = lifeStagesByWikiId[l.LifeStageTermId.Value],
+                                        lifestage = enumsByWikiId.LifeStages[l.LifeStageTermId.Value],
                                         evidence = l.EvidenceId.HasValue
-                                            ? confidenceLevelsByWikiId[l.EvidenceId.Value]
+                                            ? enumsByWikiId.ConfidenceLevels[l.EvidenceId.Value]
                                             : confidenceleveltype.notspecified
                                     })
                                 .ToArray(),
@@ -104,7 +94,7 @@ namespace AopWikiExporter.Mapping
                                         taxonomyid =
                                             taxonomies.GetByAopWikiId(t.TaxonTermId.Value).id,
                                         evidence = t.EvidenceId.HasValue
-                                            ? confidenceLevelsByWikiId[t.EvidenceId.Value]
+                                            ? enumsByWikiId.ConfidenceLevels[t.EvidenceId.Value]
                                             : confidenceleveltype.notspecified
                                     })
                                 .ToArray()
@@ -148,11 +138,11 @@ namespace AopWikiExporter.Mapping
                                         ? dataAopRelationshipDirectness.direct
                                         : dataAopRelationshipDirectness.indirect,
                                     evidence = r.EvidenceId.HasValue
-                                        ? confidenceLevelsByWikiId[r.EvidenceId.Value]
+                                        ? enumsByWikiId.ConfidenceLevels[r.EvidenceId.Value]
                                         : confidenceleveltype.notspecified,
                                     quantitativeunderstandingvalue =
                                         r.QuantitativeUnderstandingId.HasValue
-                                            ? confidenceLevelsByWikiId[r.QuantitativeUnderstandingId.Value]
+                                            ? enumsByWikiId.ConfidenceLevels[r.QuantitativeUnderstandingId.Value]
                                             : confidenceleveltype.notspecified
                                 }.SetWikiId(r.RelationshipId.Value))
                             .ToArray(),
@@ -164,7 +154,7 @@ namespace AopWikiExporter.Mapping
                                 {
                                     keyeventid = keyEventsByWikiId[s.EventId.Value].id,
                                     essentialitylevel = s.EssentialityId.HasValue
-                                        ? confidenceLevelsByWikiId[s.EssentialityId.Value]
+                                        ? enumsByWikiId.ConfidenceLevels[s.EssentialityId.Value]
                                         : confidenceleveltype.notspecified,
                                 }.SetWikiId(s.EventId.Value)).ToArray(),
 
@@ -175,7 +165,7 @@ namespace AopWikiExporter.Mapping
                                 {
                                     id = stressorsByWikiId[s.StressorId.Value].id,
                                     evidence = s.EvidenceId.HasValue
-                                        ? confidenceLevelsByWikiId[s.EvidenceId.Value]
+                                        ? enumsByWikiId.ConfidenceLevels[s.EvidenceId.Value]
                                         : confidenceleveltype.notspecified
                                 }.SetWikiId(s.StressorId.Value))
                             .ToArray(),

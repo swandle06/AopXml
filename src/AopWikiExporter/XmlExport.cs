@@ -58,6 +58,7 @@ namespace AopWikiExporter
                     .ToDictionary(x => x.GetWikiId(), x => x);
 
                 var taxonomyMapper = new TaxonomyMapper(context.TaxonTerms);
+                var uniqueTaxonomies = taxonomyMapper.GetUniqueMappedObjects();
 
                 var chemicalsByWikiId = context.Chemicals
                     .MapToSchema(context.ChemicalSynonyms)
@@ -149,6 +150,27 @@ namespace AopWikiExporter
                             .Distinct()
                             .ToDictionary(x => x, x => keyEventsByWikiId[x]);
 
+                    biologicalActionsByWikiId = keyEventsByWikiId.Values
+                        .SelectMany(x => x.biologicalevents?.Select(e => e?.actionid?.GetWikiId()))
+                        .Where(x => x.HasValue)
+                        .Select(x => x.Value)
+                        .Distinct()
+                        .ToDictionary(x => x, x => biologicalActionsByWikiId[x]);
+
+                    biologicalProcessesByWikiId = keyEventsByWikiId.Values
+                        .SelectMany(x => x.biologicalevents?.Select(e => e?.processid?.GetWikiId()))
+                        .Where(x => x.HasValue)
+                        .Select(x => x.Value)
+                        .Distinct()
+                        .ToDictionary(x => x, x => biologicalProcessesByWikiId[x]);
+
+                    biologicalObjectsByWikiId = keyEventsByWikiId.Values
+                        .SelectMany(x => x.biologicalevents?.Select(e => e?.objectid?.GetWikiId()))
+                        .Where(x => x.HasValue)
+                        .Select(x => x.Value)
+                        .Distinct()
+                        .ToDictionary(x => x, x => biologicalObjectsByWikiId[x]);
+
                     stressorsByWikiId = targetAops
                         .SelectMany(x => x.aopstressors?.Select(s => s.GetWikiId()) ?? new int[0])
                         .Union(keyEventsByWikiId.Values.SelectMany(k => k.keyeventstressors?.Select(s => s.GetWikiId())))
@@ -165,7 +187,7 @@ namespace AopWikiExporter
                 var referenceLists = new List<IEnumerable<IXmlIdentifiable>>();
                 biologicalProcessesByWikiId.Values.AddToReferencesAndAssignToRoot(referenceLists, data);
                 biologicalActionsByWikiId.Values.AddToReferencesAndAssignToRoot(referenceLists, data);
-                taxonomyMapper.GetUniqueMappedObjects().AddToReferencesAndAssignToRoot(referenceLists, data);
+                uniqueTaxonomies.AddToReferencesAndAssignToRoot(referenceLists, data);
                 chemicalsByWikiId.Values.AddToReferencesAndAssignToRoot(referenceLists, data);
                 stressorsByWikiId.Values.AddToReferencesAndAssignToRoot(referenceLists, data);
                 biologicalObjectsByWikiId.Values.AddToReferencesAndAssignToRoot(referenceLists, data);

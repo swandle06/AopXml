@@ -56,12 +56,15 @@ namespace AopWikiExporter.Mapping
                                 {
                                     objectid = s.SubEvent.BiologicalObjectId.HasValue
                                         ? biologicalObjectsByWikiId[s.SubEvent.BiologicalObjectId.Value].id
+                                            .SetWikiId(s.SubEvent.BiologicalObjectId.Value)
                                         : null,
                                     processid = s.SubEvent.BiologicalProcessId.HasValue
                                         ? biologicalProcessesByWikiId[s.SubEvent.BiologicalProcessId.Value].id
+                                            .SetWikiId(s.SubEvent.BiologicalProcessId.Value)
                                         : null,
                                     actionid = s.SubEvent.BiologicalActionId.HasValue
                                         ? biologicalActionsByWikiId[s.SubEvent.BiologicalActionId.Value].id
+                                            .SetWikiId(s.SubEvent.BiologicalActionId.Value)
                                         : null
                                 })
                             .ToArray(),

@@ -118,11 +118,16 @@ namespace AopWikiExporter
                 IReadOnlyCollection<dataAop> targetAops = aopsByWikiId.Values;
                 if (this._excludeUnreferencedElements)
                 {
-                    targetAops = this._targetType == TargetType.Aop
-                                 && this._targetId.HasValue
-                                 && aopsByWikiId.TryGetValue(this._targetId.Value, out var matchedAop)
-                        ? new[] { matchedAop }
-                        : new dataAop[0];
+                    if (this._targetType == TargetType.Aop
+                        && this._targetId.HasValue
+                        && aopsByWikiId.TryGetValue(this._targetId.Value, out var matchedAop))
+                    {
+                        targetAops = new[] { matchedAop };
+                    }
+                    else if (this._targetType == TargetType.KeyEvent)
+                    {
+                        targetAops = new dataAop[0];
+                    }
 
                     keyEventRelationshipsByWikiId = targetAops.SelectMany(x => x.keyeventrelationships)
                         .Where(x => x != null)

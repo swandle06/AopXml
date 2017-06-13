@@ -58,7 +58,8 @@ namespace AopWikiExporter
                     .ToDictionary(x => x.GetWikiId(), x => x);
 
                 var taxonomyMapper = new TaxonomyMapper(context.TaxonTerms);
-                var uniqueTaxonomies = taxonomyMapper.GetUniqueMappedObjects();
+                var uniqueTaxonomiesByXmlId = taxonomyMapper.GetUniqueMappedObjectsByXmlId();
+                var uniqueTaxonomies = uniqueTaxonomiesByXmlId.Values;
 
                 var chemicalsByWikiId = context.Chemicals
                     .MapToSchema(context.ChemicalSynonyms)
@@ -149,6 +150,16 @@ namespace AopWikiExporter
                                     .Where(v => v != null).Select(v => v.Value))
                             .Distinct()
                             .ToDictionary(x => x, x => keyEventsByWikiId[x]);
+
+                    uniqueTaxonomies = targetAops
+                        .SelectMany(x => x.applicability?.taxonomy.Select(t => t?.taxonomyid))
+                        .Union(
+                            keyEventsByWikiId.Values.SelectMany(
+                                x => x.applicability?.taxonomy.Select(t => t?.taxonomyid)))
+                        .Distinct()
+                        .Select(x => uniqueTaxonomiesByXmlId.TryGetValue(x, out var taxonomy) ? taxonomy : null)
+                        .Where(x => x != null)
+                        .ToList();
 
                     biologicalActionsByWikiId = keyEventsByWikiId.Values
                         .SelectMany(x => x.biologicalevents?.Select(e => e?.actionid?.GetWikiId()))

@@ -12,8 +12,8 @@ namespace AopWikiExporter.Mapping
     {
         static readonly ConcurrentDictionary<Type, string> s_TagNamesByType = new ConcurrentDictionary<Type, string>();
 
-        public static IReadOnlyCollection<TXmlIdentifiable> AddToReferencesAndAssignToRoot<TXmlIdentifiable>(
-            this IReadOnlyCollection<TXmlIdentifiable> collection,
+        public static void AddToReferencesAndAssignToRoot<TXmlIdentifiable>(
+            this IEnumerable<TXmlIdentifiable> collection,
             IList<IEnumerable<IXmlIdentifiable>> referenceLists,
             data root) where TXmlIdentifiable : IXmlIdentifiable
         {
@@ -21,7 +21,8 @@ namespace AopWikiExporter.Mapping
             if (referenceLists == null) throw new ArgumentNullException(nameof(referenceLists));
             if (root == null) throw new ArgumentNullException(nameof(root));
 
-            referenceLists.Add(collection.Cast<IXmlIdentifiable>());
+            var array = collection.ToArray();
+            referenceLists.Add(array.Cast<IXmlIdentifiable>());
 
             var property = root
                 .GetType()
@@ -32,9 +33,7 @@ namespace AopWikiExporter.Mapping
                 throw new InvalidOperationException(
                     $"root element doesn't have a property of type {typeof(TXmlIdentifiable).Name}[]");
             }
-            property.SetValue(root, collection.ToArray());
-
-            return collection;
+            property.SetValue(root, array);
         }
 
         public static XmlElement ToXmlElement(this IXmlIdentifiable reference)

@@ -24,7 +24,9 @@ namespace AopWikiExporter.Mapping
                             description = x.ChemicalDescription,
                             exposurecharacterization = x.CharacterizationOfExposure,
                             creationtimestamp = x.CreatedAt,
-                            lastmodificationtimestamp = x.UpdatedAt
+                            creationtimestampSpecified = x.CreatedAt != default(DateTime),
+                            lastmodificationtimestamp = x.UpdatedAt,
+                            lastmodificationtimestampSpecified = x.UpdatedAt != default(DateTime)
                         }.SetWikiId(x.Id),
                         Chemicals = x.StressorChemicals.Select(
                             c => new

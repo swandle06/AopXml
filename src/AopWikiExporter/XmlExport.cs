@@ -92,9 +92,7 @@ namespace AopWikiExporter
                         biologicalObjectsByWikiId,
                         biologicalProcessesByWikiId,
                         biologicalActionsByWikiId,
-                        enumsByWikiId.ConfidenceLevels,
-                        enumsByWikiId.Sexes,
-                        enumsByWikiId.LifeStages,
+                        enumsByWikiId,
                         taxonomyMapper,
                         stressorsByWikiId)
                     .ToDictionary(x => x.GetWikiId(), x => x);

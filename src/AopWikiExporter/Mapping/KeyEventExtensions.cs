@@ -14,9 +14,7 @@ namespace AopWikiExporter.Mapping
             IReadOnlyDictionary<int, dataBiologicalobject> biologicalObjectsByWikiId,
             IReadOnlyDictionary<int, dataBiologicalprocess> biologicalProcessesByWikiId,
             IReadOnlyDictionary<int, dataBiologicalaction> biologicalActionsByWikiId,
-            IReadOnlyDictionary<int, confidenceleveltype> confidenceLevelsByWikiId,
-            IReadOnlyDictionary<int, applicabilitytypeSexSex> sexesByWikiId,
-            IReadOnlyDictionary<int, applicabilitytypeLifestageLifestage> lifeStagesByWikiId,
+            EnumsByWikiId enumsByWikiId,
             TaxonomyMapper taxonomies,
             IReadOnlyDictionary<int, dataStressor> stressorsByWikiId)
         {
@@ -27,9 +25,7 @@ namespace AopWikiExporter.Mapping
             if (biologicalProcessesByWikiId == null)
                 throw new ArgumentNullException(nameof(biologicalProcessesByWikiId));
             if (biologicalActionsByWikiId == null) throw new ArgumentNullException(nameof(biologicalActionsByWikiId));
-            if (confidenceLevelsByWikiId == null) throw new ArgumentNullException(nameof(confidenceLevelsByWikiId));
-            if (sexesByWikiId == null) throw new ArgumentNullException(nameof(sexesByWikiId));
-            if (lifeStagesByWikiId == null) throw new ArgumentNullException(nameof(lifeStagesByWikiId));
+            if (enumsByWikiId == null) throw new ArgumentNullException(nameof(enumsByWikiId));
             if (taxonomies == null) throw new ArgumentNullException(nameof(taxonomies));
             if (stressorsByWikiId == null) throw new ArgumentNullException(nameof(stressorsByWikiId));
 
@@ -69,6 +65,12 @@ namespace AopWikiExporter.Mapping
                                 })
                             .ToArray(),
 
+                        biologicalorganizationlevel = x.BiologicalOrganizationId.HasValue
+                            ? enumsByWikiId.BiologicalOrganizations[x.BiologicalOrganizationId.Value]
+                            : default(biologicalorganizationleveltype),
+
+                        biologicalorganizationlevelSpecified = x.BiologicalOrganizationId.HasValue,
+
                         applicability = new applicabilitytype
                         {
                             sex = x.EventSexes
@@ -76,9 +78,9 @@ namespace AopWikiExporter.Mapping
                                 .Select(
                                     s => new applicabilitytypeSex
                                     {
-                                        sex = sexesByWikiId[s.SexTermId.Value],
+                                        sex = enumsByWikiId.Sexes[s.SexTermId.Value],
                                         evidence = s.EvidenceId.HasValue
-                                            ? confidenceLevelsByWikiId[s.EvidenceId.Value]
+                                            ? enumsByWikiId.ConfidenceLevels[s.EvidenceId.Value]
                                             : confidenceleveltype.notspecified
                                     })
                                 .ToArray(),
@@ -88,9 +90,9 @@ namespace AopWikiExporter.Mapping
                                 .Select(
                                     l => new applicabilitytypeLifestage
                                     {
-                                        lifestage = lifeStagesByWikiId[l.LifeStageTermId.Value],
+                                        lifestage = enumsByWikiId.LifeStages[l.LifeStageTermId.Value],
                                         evidence = l.EvidenceId.HasValue
-                                            ? confidenceLevelsByWikiId[l.EvidenceId.Value]
+                                            ? enumsByWikiId.ConfidenceLevels[l.EvidenceId.Value]
                                             : confidenceleveltype.notspecified
                                     })
                                 .ToArray(),
@@ -103,7 +105,7 @@ namespace AopWikiExporter.Mapping
                                         taxonomyid =
                                             taxonomies.GetByAopWikiId(t.TaxonTermId.Value).id,
                                         evidence = t.EvidenceId.HasValue
-                                            ? confidenceLevelsByWikiId[t.EvidenceId.Value]
+                                            ? enumsByWikiId.ConfidenceLevels[t.EvidenceId.Value]
                                             : confidenceleveltype.notspecified
                                     })
                                 .ToArray()
@@ -119,7 +121,9 @@ namespace AopWikiExporter.Mapping
                             .ToArray(),
 
                         creationtimestamp = x.CreatedAt,
+                        creationtimestampSpecified = x.CreatedAt != default(DateTime),
                         lastmodificationtimestamp = x.UpdatedAt,
+                        lastmodificationtimestampSpecified = x.UpdatedAt != default(DateTime),
 
                         evidencesupportingchemicalinitiation = x.EvidenceForChemicalInitiation, // Extension for mie
                         examplesusingadverseoutcome = x.ExamplesUsingAo // Extension for ao

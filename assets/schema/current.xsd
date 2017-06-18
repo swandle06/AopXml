@@ -212,7 +212,7 @@
                             <xs:element name="synonyms" minOccurs="0">
                                 <xs:complexType>
                                     <xs:sequence>
-                                        <xs:element name="synonym" minOccurs="1" maxOccurs="unbounded" type="xs:string" />
+                                        <xs:element name="synonym" minOccurs="0" maxOccurs="unbounded" type="xs:string" />
                                     </xs:sequence>
                                 </xs:complexType>
                             </xs:element>
@@ -265,7 +265,7 @@
                             <xs:element name="chemicals" minOccurs="0">
                                 <xs:complexType>
                                     <xs:sequence>
-                                        <xs:element name="chemical-initiator" minOccurs="1" maxOccurs="unbounded">
+                                        <xs:element name="chemical-initiator" minOccurs="0" maxOccurs="unbounded">
                                             <xs:complexType>
                                                 <xs:attribute name="chemical-id" type="guid" />
                                                 <xs:attribute name="user-term" type="xs:string" />
@@ -310,7 +310,7 @@
                             <xs:element name="biological-events" minOccurs="0">
                                 <xs:complexType>
                                     <xs:sequence>
-                                        <xs:element name="biological-event" maxOccurs="unbounded">
+                                        <xs:element name="biological-event" minOccurs="0" maxOccurs="unbounded">
                                             <xs:complexType>
                                                 <xs:attribute name="object-id" type="guid" use="optional" />
                                                 <xs:attribute name="process-id" type="guid" use="optional" />
@@ -323,7 +323,7 @@
                             <xs:element name="key-event-stressors" minOccurs="0">
                                 <xs:complexType>
                                     <xs:sequence>
-                                        <xs:element name="key-event-stressor" minOccurs="1" maxOccurs="unbounded">
+                                        <xs:element name="key-event-stressor" minOccurs="0" maxOccurs="unbounded">
                                             <xs:complexType>
                                                 <xs:complexContent>
                                                     <xs:extension base="evidence-type">
@@ -462,7 +462,7 @@
                             <xs:element name="key-event-relationships" minOccurs="0">
                                 <xs:complexType>
                                     <xs:sequence>
-                                        <xs:element name="relationship" minOccurs="1" maxOccurs="unbounded">
+                                        <xs:element name="relationship" minOccurs="0" maxOccurs="unbounded">
                                             <xs:complexType>
                                                 <xs:sequence>
                                                     <xs:element name="directness">
@@ -486,7 +486,7 @@
                             <xs:element name="key-event-essentialities" minOccurs="0">
                                 <xs:complexType>
                                     <xs:sequence>
-                                        <xs:element name="essentiality" minOccurs="1" maxOccurs="unbounded">
+                                        <xs:element name="essentiality" minOccurs="0" maxOccurs="unbounded">
                                             <xs:complexType>
                                                 <xs:sequence>
                                                     <xs:element name="essentiality-level" type="confidence-level-type" />
@@ -515,7 +515,7 @@
                             <xs:element name="aop-stressors" minOccurs="0">
                                 <xs:complexType>
                                     <xs:sequence>
-                                        <xs:element name="aop-stressor" minOccurs="1" maxOccurs="unbounded">
+                                        <xs:element name="aop-stressor" minOccurs="0" maxOccurs="unbounded">
                                             <xs:complexType>
                                                 <xs:complexContent>
                                                     <xs:extension base="evidence-type">
@@ -551,7 +551,7 @@
                 <xs:element name="vendor-specific" minOccurs="0">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:any maxOccurs="unbounded" />
+                            <xs:any maxOccurs="unbounded" processContents="lax" />
                         </xs:sequence>
                         <xs:attribute name="id" type="guid" use="required" />
                         <xs:attribute name="name" type="xs:string" use="required" />

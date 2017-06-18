@@ -55,9 +55,13 @@ namespace AopWikiExporter.Mapping
                                 ? enumsByWikiId.OecdStatuses[x.OecdStatusId.Value]
                                 : statusOecdstatus.UnderDevelopment,
 
+                            oecdstatusSpecified = x.OecdStatusId.HasValue,
+
                             saaopstatus = x.SaaopStatusId.HasValue
                                 ? enumsByWikiId.SaaopStatuses[x.SaaopStatusId.Value]
-                                : statusSaaopstatus.UnderDevelopment
+                                : statusSaaopstatus.UnderDevelopment,
+
+                            saaopstatusSpecified = x.SaaopStatusId.HasValue
                         },
 
                         applicability = new applicabilitytype
@@ -70,7 +74,7 @@ namespace AopWikiExporter.Mapping
                                         sex = enumsByWikiId.Sexes[s.SexTermId.Value],
                                         evidence = s.EvidenceId.HasValue
                                             ? enumsByWikiId.ConfidenceLevels[s.EvidenceId.Value]
-                                            : confidenceleveltype.notspecified
+                                            : confidenceleveltype.NotSpecified
                                     })
                                 .ToArray(),
 
@@ -82,7 +86,7 @@ namespace AopWikiExporter.Mapping
                                         lifestage = enumsByWikiId.LifeStages[l.LifeStageTermId.Value],
                                         evidence = l.EvidenceId.HasValue
                                             ? enumsByWikiId.ConfidenceLevels[l.EvidenceId.Value]
-                                            : confidenceleveltype.notspecified
+                                            : confidenceleveltype.NotSpecified
                                     })
                                 .ToArray(),
 
@@ -95,7 +99,7 @@ namespace AopWikiExporter.Mapping
                                             taxonomies.GetByAopWikiId(t.TaxonTermId.Value).id,
                                         evidence = t.EvidenceId.HasValue
                                             ? enumsByWikiId.ConfidenceLevels[t.EvidenceId.Value]
-                                            : confidenceleveltype.notspecified
+                                            : confidenceleveltype.NotSpecified
                                     })
                                 .ToArray()
                         },
@@ -139,11 +143,11 @@ namespace AopWikiExporter.Mapping
                                         : dataAopRelationshipDirectness.indirect,
                                     evidence = r.EvidenceId.HasValue
                                         ? enumsByWikiId.ConfidenceLevels[r.EvidenceId.Value]
-                                        : confidenceleveltype.notspecified,
+                                        : confidenceleveltype.NotSpecified,
                                     quantitativeunderstandingvalue =
                                         r.QuantitativeUnderstandingId.HasValue
                                             ? enumsByWikiId.ConfidenceLevels[r.QuantitativeUnderstandingId.Value]
-                                            : confidenceleveltype.notspecified
+                                            : confidenceleveltype.NotSpecified
                                 }.SetWikiId(r.RelationshipId.Value))
                             .ToArray(),
 
@@ -155,7 +159,7 @@ namespace AopWikiExporter.Mapping
                                     keyeventid = keyEventsByWikiId[s.EventId.Value].id,
                                     essentialitylevel = s.EssentialityId.HasValue
                                         ? enumsByWikiId.ConfidenceLevels[s.EssentialityId.Value]
-                                        : confidenceleveltype.notspecified,
+                                        : confidenceleveltype.NotSpecified,
                                 }.SetWikiId(s.EventId.Value)).ToArray(),
 
                         aopstressors = x.AopStressors
@@ -166,7 +170,7 @@ namespace AopWikiExporter.Mapping
                                     id = stressorsByWikiId[s.StressorId.Value].id,
                                     evidence = s.EvidenceId.HasValue
                                         ? enumsByWikiId.ConfidenceLevels[s.EvidenceId.Value]
-                                        : confidenceleveltype.notspecified
+                                        : confidenceleveltype.NotSpecified
                                 }.SetWikiId(s.StressorId.Value))
                             .ToArray(),
 

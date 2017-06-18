@@ -328,7 +328,11 @@ public partial class status {
     
     private statusOecdstatus oecdstatusField;
     
+    private bool oecdstatusFieldSpecified;
+    
     private statusSaaopstatus saaopstatusField;
+    
+    private bool saaopstatusFieldSpecified;
     
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("wiki-status")]
@@ -353,6 +357,17 @@ public partial class status {
     }
     
     /// <remarks/>
+    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    public bool oecdstatusSpecified {
+        get {
+            return this.oecdstatusFieldSpecified;
+        }
+        set {
+            this.oecdstatusFieldSpecified = value;
+        }
+    }
+    
+    /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute("saaop-status")]
     public statusSaaopstatus saaopstatus {
         get {
@@ -360,6 +375,17 @@ public partial class status {
         }
         set {
             this.saaopstatusField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    public bool saaopstatusSpecified {
+        get {
+            return this.saaopstatusFieldSpecified;
+        }
+        set {
+            this.saaopstatusFieldSpecified = value;
         }
     }
 }
@@ -486,8 +512,8 @@ public enum confidenceleveltype {
     Weak,
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlEnumAttribute("not specified")]
-    notspecified,
+    [System.Xml.Serialization.XmlEnumAttribute("Not Specified")]
+    NotSpecified,
 }
 
 /// <remarks/>

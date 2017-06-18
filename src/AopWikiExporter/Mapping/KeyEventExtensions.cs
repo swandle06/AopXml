@@ -81,7 +81,7 @@ namespace AopWikiExporter.Mapping
                                         sex = enumsByWikiId.Sexes[s.SexTermId.Value],
                                         evidence = s.EvidenceId.HasValue
                                             ? enumsByWikiId.ConfidenceLevels[s.EvidenceId.Value]
-                                            : confidenceleveltype.notspecified
+                                            : confidenceleveltype.NotSpecified
                                     })
                                 .ToArray(),
 
@@ -93,7 +93,7 @@ namespace AopWikiExporter.Mapping
                                         lifestage = enumsByWikiId.LifeStages[l.LifeStageTermId.Value],
                                         evidence = l.EvidenceId.HasValue
                                             ? enumsByWikiId.ConfidenceLevels[l.EvidenceId.Value]
-                                            : confidenceleveltype.notspecified
+                                            : confidenceleveltype.NotSpecified
                                     })
                                 .ToArray(),
 
@@ -106,7 +106,7 @@ namespace AopWikiExporter.Mapping
                                             taxonomies.GetByAopWikiId(t.TaxonTermId.Value).id,
                                         evidence = t.EvidenceId.HasValue
                                             ? enumsByWikiId.ConfidenceLevels[t.EvidenceId.Value]
-                                            : confidenceleveltype.notspecified
+                                            : confidenceleveltype.NotSpecified
                                     })
                                 .ToArray()
                         },

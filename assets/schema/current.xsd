@@ -142,7 +142,7 @@
                     </xs:restriction>
                 </xs:simpleType>
             </xs:element>
-            <xs:element name="oecd-status">
+            <xs:element name="oecd-status" minOccurs="0">
                 <xs:simpleType>
                     <xs:restriction base="xs:string">
                         <xs:enumeration value="TFHA/WNT Endorsed" />
@@ -152,7 +152,7 @@
                     </xs:restriction>
                 </xs:simpleType>
             </xs:element>
-            <xs:element name="saaop-status">
+            <xs:element name="saaop-status" minOccurs="0">
                 <xs:simpleType>
                     <xs:restriction base="xs:string">
                         <xs:enumeration value="Included in OECD Work Plan" />
@@ -185,7 +185,7 @@
             <xs:enumeration value="Strong" />
             <xs:enumeration value="Moderate" />
             <xs:enumeration value="Weak" />
-            <xs:enumeration value="not specified" />
+            <xs:enumeration value="Not Specified" />
         </xs:restriction>
     </xs:simpleType>
     <xs:complexType name="biological-term-type">
@@ -459,10 +459,10 @@
                                     <xs:attribute name="key-event-id" type="guid" />
                                 </xs:complexType>
                             </xs:element>
-                            <xs:element name="key-event-relationships">
+                            <xs:element name="key-event-relationships" minOccurs="0">
                                 <xs:complexType>
                                     <xs:sequence>
-                                        <xs:element name="relationship" maxOccurs="unbounded">
+                                        <xs:element name="relationship" minOccurs="1" maxOccurs="unbounded">
                                             <xs:complexType>
                                                 <xs:sequence>
                                                     <xs:element name="directness">

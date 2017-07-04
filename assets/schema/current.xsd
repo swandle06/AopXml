@@ -2,7 +2,8 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.aopkb.org/aop-xml" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" elementFormDefault="qualified" vc:minVersion="1.1" targetNamespace="http://www.aopkb.org/aop-xml">
     <xs:simpleType name="guid">
         <xs:annotation>
-            <xs:documentation xml:lang="en">The representation of a GUID, generally the id of an element.</xs:documentation>
+            <xs:documentation xml:lang="en">The representation of a GUID, generally the id of an
+                element.</xs:documentation>
         </xs:annotation>
         <xs:restriction base="xs:string">
             <xs:pattern value="[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}" />
@@ -10,6 +11,7 @@
     </xs:simpleType>
     <xs:complexType name="evidence-type">
         <xs:sequence>
+          <xs:element name="description" type="xs:string" minOccurs="0"/>
             <xs:element name="evidence" type="confidence-level-type" />
             <xs:element name="uri" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
         </xs:sequence>
@@ -327,7 +329,7 @@
                                             <xs:complexType>
                                                 <xs:complexContent>
                                                     <xs:extension base="evidence-type">
-                                                        <xs:attribute name="id" type="guid" use="required" />
+                                                        <xs:attribute name="stressor-id" type="guid" use="required" />
                                                     </xs:extension>
                                                 </xs:complexContent>
                                             </xs:complexType>
@@ -519,7 +521,7 @@
                                             <xs:complexType>
                                                 <xs:complexContent>
                                                     <xs:extension base="evidence-type">
-                                                        <xs:attribute name="id" type="guid" use="required" />
+                                                        <xs:attribute name="stressor-id" type="guid" use="required" />
                                                     </xs:extension>
                                                 </xs:complexContent>
                                             </xs:complexType>

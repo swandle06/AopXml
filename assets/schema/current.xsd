@@ -430,6 +430,7 @@
                             <xs:element name="short-name" type="xs:string" />
                             <xs:element name="authors" type="xs:string" />
                             <xs:element name="status" type="status" />
+                            <xs:element name="oecd-project" type="xs:string" minOccurs="0" />
                             <xs:element name="abstract" type="xs:string" />
                             <xs:element name="background" type="xs:string" minOccurs="0" />
                             <xs:element name="molecular-initiating-event" maxOccurs="unbounded" minOccurs="0">

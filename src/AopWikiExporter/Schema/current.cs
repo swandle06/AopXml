@@ -470,9 +470,21 @@ public enum statusSaaopstatus {
 [System.Xml.Serialization.XmlTypeAttribute(TypeName="evidence-type", Namespace="http://www.aopkb.org/aop-xml")]
 public partial class evidencetype {
     
+    private string descriptionField;
+    
     private confidenceleveltype evidenceField;
     
     private string[] uriField;
+    
+    /// <remarks/>
+    public string description {
+        get {
+            return this.descriptionField;
+        }
+        set {
+            this.descriptionField = value;
+        }
+    }
     
     /// <remarks/>
     public confidenceleveltype evidence {
@@ -1859,16 +1871,16 @@ public partial class dataKeyeventBiologicalevent {
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.aopkb.org/aop-xml")]
 public partial class dataKeyeventKeyeventstressor : evidencetype {
     
-    private string idField;
+    private string stressoridField;
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    public string id {
+    [System.Xml.Serialization.XmlAttributeAttribute("stressor-id")]
+    public string stressorid {
         get {
-            return this.idField;
+            return this.stressoridField;
         }
         set {
-            this.idField = value;
+            this.stressoridField = value;
         }
     }
 }
@@ -2346,6 +2358,8 @@ public partial class dataAop {
     
     private status statusField;
     
+    private string oecdprojectField;
+    
     private string abstractField;
     
     private string backgroundField;
@@ -2424,6 +2438,17 @@ public partial class dataAop {
         }
         set {
             this.statusField = value;
+        }
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute("oecd-project")]
+    public string oecdproject {
+        get {
+            return this.oecdprojectField;
+        }
+        set {
+            this.oecdprojectField = value;
         }
     }
     
@@ -2988,16 +3013,16 @@ public partial class dataAopOverallassessment {
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="http://www.aopkb.org/aop-xml")]
 public partial class dataAopAopstressor : evidencetype {
     
-    private string idField;
+    private string stressoridField;
     
     /// <remarks/>
-    [System.Xml.Serialization.XmlAttributeAttribute()]
-    public string id {
+    [System.Xml.Serialization.XmlAttributeAttribute("stressor-id")]
+    public string stressorid {
         get {
-            return this.idField;
+            return this.stressoridField;
         }
         set {
-            this.idField = value;
+            this.stressoridField = value;
         }
     }
 }

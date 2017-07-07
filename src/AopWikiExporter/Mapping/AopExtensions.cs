@@ -167,7 +167,7 @@ namespace AopWikiExporter.Mapping
                             .Select(
                                 s => new dataAopAopstressor
                                 {
-                                    id = stressorsByWikiId[s.StressorId.Value].id,
+                                    stressorid = stressorsByWikiId[s.StressorId.Value].id,
                                     evidence = s.EvidenceId.HasValue
                                         ? enumsByWikiId.ConfidenceLevels[s.EvidenceId.Value]
                                         : confidenceleveltype.NotSpecified

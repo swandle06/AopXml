@@ -468,11 +468,11 @@
                                         <xs:element name="relationship" minOccurs="0" maxOccurs="unbounded">
                                             <xs:complexType>
                                                 <xs:sequence>
-                                                    <xs:element name="directness">
+                                                    <xs:element name="adjacency">
                                                         <xs:simpleType>
                                                             <xs:restriction base="xs:string">
-                                                                <xs:enumeration value="direct" />
-                                                                <xs:enumeration value="indirect" />
+                                                                <xs:enumeration value="adjacent" />
+                                                                <xs:enumeration value="non-adjacent" />
                                                             </xs:restriction>
                                                         </xs:simpleType>
                                                     </xs:element>

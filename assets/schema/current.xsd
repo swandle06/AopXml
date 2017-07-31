@@ -230,7 +230,7 @@
                         <xs:complexContent>
                             <xs:extension base="biological-term-type">
                                 <xs:sequence>
-                                    <xs:element name="biological-organization" type="biological-organization-level-type" />
+                                    <xs:element name="biological-organization" type="biological-organization-level-type" minOccurs="0"/>
                                 </xs:sequence>
                                 <xs:attribute name="id" type="guid" use="required" />
                             </xs:extension>
@@ -242,7 +242,7 @@
                         <xs:complexContent>
                             <xs:extension base="biological-term-type">
                                 <xs:sequence>
-                                    <xs:element name="biological-organization" type="biological-organization-level-type" />
+                                    <xs:element name="biological-organization" type="biological-organization-level-type" minOccurs="0"/>
                                 </xs:sequence>
                                 <xs:attribute name="id" type="guid" use="required" />
                             </xs:extension>

@@ -184,9 +184,9 @@
     </xs:simpleType>
     <xs:simpleType name="confidence-level-type">
         <xs:restriction base="xs:string">
-            <xs:enumeration value="Strong" />
+            <xs:enumeration value="High" />
             <xs:enumeration value="Moderate" />
-            <xs:enumeration value="Weak" />
+            <xs:enumeration value="Low" />
             <xs:enumeration value="Not Specified" />
         </xs:restriction>
     </xs:simpleType>

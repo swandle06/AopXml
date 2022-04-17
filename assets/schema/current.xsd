@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.aopkb.org/aop-xml" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" elementFormDefault="qualified" vc:minVersion="1.1" targetNamespace="http://www.aopkb.org/aop-xml">
     <xs:simpleType name="guid">
         <xs:annotation>
@@ -139,13 +139,14 @@
                         <xs:enumeration value="Open for adoption" />
                         <xs:enumeration value="Not under active development" />
                         <xs:enumeration value="Under development: Not open for comment. Do not cite" />
+                        <xs:enumeration value="Under Development: Contributions and Comments Welcome" />
                     </xs:restriction>
                 </xs:simpleType>
             </xs:element>
             <xs:element name="oecd-status">
                 <xs:simpleType>
                     <xs:restriction base="xs:string">
-                        <xs:enumeration value="TFHA/WNT Endorsed" />
+                        <xs:enumeration value="WPHA/WNT Endorsed" />
                         <xs:enumeration value="EAGMST Approved" />
                         <xs:enumeration value="EAGMST Under Review" />
                         <xs:enumeration value="Under Development" />

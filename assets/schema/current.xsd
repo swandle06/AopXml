@@ -429,6 +429,7 @@
                             <xs:element name="short-name" type="xs:string" />
                             <xs:element name="authors" type="xs:string" />
                             <xs:element name="status" type="status" />
+                            <xs:element name="oecd-project" type="xs:string" />
                             <xs:element name="abstract" type="xs:string" />
                             <xs:element name="background" type="xs:string" minOccurs="0" />
                             <xs:element name="molecular-initiating-event" maxOccurs="unbounded" minOccurs="0">
@@ -520,7 +521,7 @@
                                             <xs:complexType>
                                                 <xs:complexContent>
                                                     <xs:extension base="evidence-type">
-                                                        <xs:attribute name="id" type="guid" use="required" />
+                                                        <xs:attribute name="stressor-id" type="guid" use="required" />
                                                     </xs:extension>
                                                 </xs:complexContent>
                                             </xs:complexType>

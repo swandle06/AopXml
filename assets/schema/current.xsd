@@ -440,6 +440,17 @@
                                     <xs:attribute name="key-event-id" />
                                 </xs:complexType>
                             </xs:element>
+                            <xs:element name="key-events" maxOccurs="unbounded" minOccurs="0">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element>
+                                            <xs:complexType>
+                                                <xs:attribute name="id" />
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
                             <xs:element name="adverse-outcome" minOccurs="0" maxOccurs="unbounded">
                                 <xs:complexType>
                                     <xs:sequence>

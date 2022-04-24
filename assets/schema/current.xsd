@@ -143,7 +143,7 @@
                     </xs:restriction>
                 </xs:simpleType>
             </xs:element>
-            <xs:element name="oecd-status">
+            <xs:element name="oecd-status" minOccurs="0">
                 <xs:simpleType>
                     <xs:restriction base="xs:string">
                         <xs:enumeration value="WPHA/WNT Endorsed" />
@@ -229,7 +229,7 @@
                         <xs:complexContent>
                             <xs:extension base="biological-term-type">
                                 <xs:sequence>
-                                    <xs:element name="biological-organization" type="biological-organization-level-type" />
+                                    
                                 </xs:sequence>
                                 <xs:attribute name="id" type="guid" use="required" />
                             </xs:extension>
@@ -241,7 +241,7 @@
                         <xs:complexContent>
                             <xs:extension base="biological-term-type">
                                 <xs:sequence>
-                                    <xs:element name="biological-organization" type="biological-organization-level-type" />
+                                    
                                 </xs:sequence>
                                 <xs:attribute name="id" type="guid" use="required" />
                             </xs:extension>
@@ -328,7 +328,7 @@
                                             <xs:complexType>
                                                 <xs:complexContent>
                                                     <xs:extension base="evidence-type">
-                                                        <xs:attribute name="id" type="guid" use="required" />
+                                                        <xs:attribute name="stressor-id" type="guid" use="required" />
                                                     </xs:extension>
                                                 </xs:complexContent>
                                             </xs:complexType>
@@ -437,15 +437,15 @@
                                     <xs:sequence>
                                         <xs:element name="evidence-supporting-chemical-initiation" type="xs:string" minOccurs="0" />
                                     </xs:sequence>
-                                    <xs:attribute name="key-event-id" />
+                                    <xs:attribute name="key-event-id"  type="guid"  use="required" />
                                 </xs:complexType>
                             </xs:element>
-                            <xs:element name="key-events" maxOccurs="unbounded" minOccurs="0">
+                            <xs:element name="key-events" maxOccurs="1" minOccurs="0">
                                 <xs:complexType>
                                     <xs:sequence>
-                                        <xs:element>
+                                        <xs:element name="key-event" minOccurs="0" maxOccurs="unbounded">
                                             <xs:complexType>
-                                                <xs:attribute name="id" />
+                                                <xs:attribute name="key-event-id"  type="guid"  use="required" />
                                             </xs:complexType>
                                         </xs:element>
                                     </xs:sequence>
@@ -469,7 +469,7 @@
                                             </xs:complexType>
                                         </xs:element>
                                     </xs:sequence>
-                                    <xs:attribute name="key-event-id" type="guid" />
+                                    <xs:attribute name="key-event-id" type="guid"  use="required" />
                                 </xs:complexType>
                             </xs:element>
                             <xs:element name="key-event-relationships">
@@ -532,7 +532,7 @@
                                             <xs:complexType>
                                                 <xs:complexContent>
                                                     <xs:extension base="evidence-type">
-                                                        <xs:attribute name="stressor-id" type="guid" use="required" />
+														<xs:attribute name="stressor-id" type="guid" use="required" />
                                                     </xs:extension>
                                                 </xs:complexContent>
                                             </xs:complexType>

@@ -472,7 +472,7 @@
                                     <xs:attribute name="key-event-id" type="guid"  use="required" />
                                 </xs:complexType>
                             </xs:element>
-                            <xs:element name="key-event-relationships">
+                            <xs:element name="key-event-relationships" maxOccurs="1" minOccurs="0">
                                 <xs:complexType>
                                     <xs:sequence>
                                         <xs:element name="relationship" maxOccurs="unbounded">

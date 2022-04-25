@@ -78,6 +78,7 @@
                                             <xs:enumeration value="Development" />
                                             <xs:enumeration value="All life stages" />
                                             <xs:enumeration value="Fetal" />
+                                            <xs:enumeration value="Larvae" />
                                         </xs:restriction>
                                     </xs:simpleType>
                                 </xs:element>
@@ -153,7 +154,7 @@
                     </xs:restriction>
                 </xs:simpleType>
             </xs:element>
-            <xs:element name="saaop-status">
+            <xs:element name="saaop-status" minOccurs="0">
                 <xs:simpleType>
                     <xs:restriction base="xs:string">
                         <xs:enumeration value="Included in OECD Work Plan" />

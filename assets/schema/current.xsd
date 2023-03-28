@@ -429,6 +429,21 @@
                             <xs:element name="title" type="xs:string" />
                             <xs:element name="short-name" type="xs:string" />
                             <xs:element name="authors" type="xs:string" />
+                            <xs:element name="aop-coaches" minOccurs="0">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="aop-coach" minOccurs="1" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:complexContent>
+                                                    <xs:extension base="evidence-type">
+														<xs:attribute name="user-id" type="guid" use="required" />
+                                                    </xs:extension>
+                                                </xs:complexContent>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
                             <xs:element name="status" type="status" />
                             <xs:element name="oecd-project" type="xs:string" />
                             <xs:element name="abstract" type="xs:string" />

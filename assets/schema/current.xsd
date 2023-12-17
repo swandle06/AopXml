@@ -432,11 +432,28 @@
                         <xs:sequence>
                             <xs:element name="title" type="xs:string" />
                             <xs:element name="short-name" type="xs:string" />
+                            <xs:element name="point-of-contact" type="xs:string" />
                             <xs:element name="authors" type="xs:string" />
-                            <xs:element name="status" type="status" />
+                            <xs:element name="coaches" maxOccurs="1" minOccurs="0" >
+                               <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="coach" type="xs:string" maxOccurs="unbounded" minOccurs="0" />
+                                    </xs:sequence>
+                                </xs:complexType>
+                             </xs:element>                            
+                            <xs:element name="status" >
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="wiki-license" type="xs:string" minOccurs="1" />
+                                        <xs:element name="oecd-status" type="xs:string" minOccurs="0" />
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
                             <xs:element name="oecd-project" type="xs:string" />
+                            <xs:element name="handbook-version" type="xs:string" />
                             <xs:element name="abstract" type="xs:string" />
                             <xs:element name="background" type="xs:string" minOccurs="0" />
+                            <xs:element name="development-strategy" type="xs:string" minOccurs="0" />
                             <xs:element name="molecular-initiating-event" maxOccurs="unbounded" minOccurs="0">
                                 <xs:complexType>
                                     <xs:sequence>
@@ -500,22 +517,6 @@
                                     </xs:sequence>
                                 </xs:complexType>
                             </xs:element>
-                            <xs:element name="essentiality-support" minOccurs="0" maxOccurs="unbounded" />
-                            <xs:element name="key-event-essentialities" minOccurs="0">
-                                <xs:complexType>
-                                    <xs:sequence>
-                                        <xs:element name="essentiality" minOccurs="1" maxOccurs="unbounded">
-                                            <xs:complexType>
-                                                <xs:sequence>
-                                                    <xs:element name="essentiality-level" type="confidence-level-type" />
-                                                    <xs:element name="uri" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
-                                                </xs:sequence>
-                                                <xs:attribute name="key-event-id" type="guid" use="required" />
-                                            </xs:complexType>
-                                        </xs:element>
-                                    </xs:sequence>
-                                </xs:complexType>
-                            </xs:element>
                             <xs:element name="applicability" type="applicability-type" minOccurs="0" />
                             <xs:element name="overall-assessment" maxOccurs="1" minOccurs="0">
                                 <xs:complexType>
@@ -524,6 +525,7 @@
                                         <xs:element name="applicability" type="xs:string" minOccurs="0" />
                                         <xs:element name="key-event-essentiality-summary" type="xs:string" minOccurs="0" />
                                         <xs:element name="weight-of-evidence-summary" type="xs:string" minOccurs="0" />
+                                        <xs:element name="known-modulating-factors" type="xs:string" minOccurs="0" />
                                         <xs:element name="quantitative-considerations" type="xs:string" minOccurs="0" />
                                         <xs:element name="uri" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
                                     </xs:sequence>

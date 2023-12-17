@@ -380,8 +380,8 @@
                                     </xs:sequence>
                                 </xs:complexType>
                             </xs:element>
-                            <xs:element name="description" type="xs:string" />
-                            <xs:element name="temporal-concordance" type="xs:string" minOccurs="0" />
+                            <xs:element name="description" type="xs:string" minOccurs="0" />
+                            <xs:element name="evidence-collection-strategy" type="xs:string" minOccurs="0" />
                             <xs:element name="weight-of-evidence" minOccurs="0">
                                 <xs:complexType>
                                     <xs:sequence>
@@ -392,11 +392,15 @@
                                     </xs:sequence>
                                 </xs:complexType>
                             </xs:element>
+                            <xs:element name="known-modulating-factors" type="xs:string" minOccurs="0" />
                             <xs:element name="quantitative-understanding" minOccurs="0">
                                 <xs:complexType>
                                     <xs:sequence>
                                         <xs:element name="description" type="xs:string" />
                                         <xs:element name="support-evidence" type="xs:string" minOccurs="0" />
+                                        <xs:element name="response-response-relationship" type="xs:string" minOccurs="0" />
+                                        <xs:element name="time-scale" type="xs:string" minOccurs="0" />
+                                        <xs:element name="feedforward-feedback-loops" type="xs:string" minOccurs="0" />
                                     </xs:sequence>
                                 </xs:complexType>
                             </xs:element>
